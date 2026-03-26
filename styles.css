@@ -1255,3 +1255,60 @@ button, .btn { cursor: pointer; }
 .lista-card-actions button {
   white-space: nowrap;
 }
+
+/* ── Admin gate (pantalla de contraseña) ── */
+.admin-gate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.admin-gate-box {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+.admin-gate-icon {
+  font-size: 2rem;
+  margin-bottom: .75rem;
+  opacity: .6;
+}
+
+.admin-gate-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-bottom: .375rem;
+  text-align: center;
+}
+
+.admin-gate-form {
+  display: flex;
+  gap: .5rem;
+  width: 100%;
+  margin-top: .25rem;
+}
+
+.admin-gate-input {
+  flex: 1;
+  padding: .65rem .875rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: .9rem;
+  outline: none;
+  transition: border-color var(--duration);
+}
+
+.admin-gate-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}

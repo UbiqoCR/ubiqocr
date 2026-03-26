@@ -41,8 +41,9 @@
           Buscar producto
         </button>
         <button class="tab-btn" id="tabAgregar" role="tab"
-                aria-controls="panelAgregar" aria-selected="false" type="button">
-          Agregar mi negocio
+                aria-controls="panelAgregar" aria-selected="false" type="button"
+                style="opacity:.45;font-size:.8rem;">
+          🔒 Admin
         </button>
       </div>
     </section>
@@ -139,6 +140,29 @@
     ══════════════════════════════════════ -->
     <section class="panel tab-panel" id="panelAgregar"
              role="tabpanel" aria-labelledby="tabAgregar">
+
+      <!-- Gate de contraseña -->
+      <div id="adminGate" class="admin-gate">
+        <div class="admin-gate-box">
+          <div class="admin-gate-icon">🔒</div>
+          <h3 class="admin-gate-title">Área restringida</h3>
+          <p class="mini" style="margin-bottom:1rem;text-align:center;">
+            Ingresá la contraseña para acceder al panel de administración.
+          </p>
+          <div class="admin-gate-form">
+            <input id="adminPass" type="password" placeholder="Contraseña"
+                   class="admin-gate-input" autocomplete="off" />
+            <button id="adminPassBtn" class="btn" type="button">Entrar</button>
+          </div>
+          <p id="adminPassError" class="mini"
+             style="color:var(--danger);margin-top:.5rem;display:none;text-align:center;">
+            Contraseña incorrecta
+          </p>
+        </div>
+      </div>
+
+      <!-- Contenido admin (oculto hasta autenticar) -->
+      <div id="adminContent" style="display:none;">
 
       <!-- Header admin -->
       <div class="admin-header">
@@ -320,6 +344,7 @@
         <div id="listaNegocios" class="lista-negocios"></div>
       </div>
 
+      </div><!-- /adminContent -->
     </section>
   </main>
 
@@ -457,7 +482,21 @@
       el("tabAgregar").setAttribute("aria-selected", isBuscar ? "false" : "true");
       el("panelBuscar").classList.toggle("active", isBuscar);
       el("panelAgregar").classList.toggle("active", !isBuscar);
-      setTimeout(() => (isBuscar ? el("q") : el("nombre"))?.focus(), 0);
+
+      if (!isBuscar){
+        // Mostrar gate o contenido según autenticación
+        if (isAdminUnlocked()){
+          el("adminGate").style.display    = "none";
+          el("adminContent").style.display = "block";
+          setTimeout(() => el("nombre")?.focus(), 0);
+        } else {
+          el("adminGate").style.display    = "block";
+          el("adminContent").style.display = "none";
+          setTimeout(() => el("adminPass")?.focus(), 0);
+        }
+      } else {
+        setTimeout(() => el("q")?.focus(), 0);
+      }
     }
 
     // ── Filas de productos ────────────────────────────────
@@ -712,6 +751,40 @@
       if (y) y.textContent = new Date().getFullYear();
 
       // Tabs
+      // ── Autenticación admin ──────────────────────────────
+      // Contraseña almacenada en partes para no exponerla directamente
+      // Para cambiarla: modificá los segmentos de _k y actualizá _s
+      const _k = ["ubiq","oadm","in20","25"].join("");
+      const _s = btoa(_k); // "dWJpcW9hZG1pbjIwMjU="
+
+      function isAdminUnlocked(){
+        return sessionStorage.getItem("ubiqo_admin") === _s;
+      }
+
+      function unlockAdmin(){
+        sessionStorage.setItem("ubiqo_admin", _s);
+        el("adminGate").style.display    = "none";
+        el("adminContent").style.display = "block";
+      }
+
+      function checkAdminPass(){
+        const pass = el("adminPass").value.trim();
+        if (!pass) return;
+        if (pass === atob(_s)){
+          el("adminPassError").style.display = "none";
+          unlockAdmin();
+        } else {
+          el("adminPassError").style.display = "block";
+          el("adminPass").value = "";
+          el("adminPass").focus();
+        }
+      }
+
+      el("adminPassBtn").addEventListener("click", checkAdminPass);
+      el("adminPass").addEventListener("keydown", e => {
+        if (e.key === "Enter") checkAdminPass();
+      });
+
       // ── Cantones por provincia ──────────────────────────
       const CANTONES = {
         "San José":    ["San José","Escazú","Desamparados","Puriscal","Tarrazú","Aserrí","Mora","Goicoechea","Santa Ana","Alajuelita","Vásquez de Coronado","Acosta","Tibás","Moravia","Montes de Oca","Turrubares","Dota","Curridabat","Pérez Zeledón","León Cortés Castro"],
