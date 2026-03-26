@@ -135,137 +135,192 @@
     </section>
 
     <!-- ══════════════════════════════════════
-         TAB 2 — AGREGAR NEGOCIO
+         TAB 2 — ADMIN: AGREGAR / GESTIONAR NEGOCIOS
     ══════════════════════════════════════ -->
     <section class="panel tab-panel" id="panelAgregar"
              role="tabpanel" aria-labelledby="tabAgregar">
 
-      <div style="margin-bottom:1.25rem;">
-        <h2 style="font-size:1.25rem;font-weight:600;margin-bottom:.25rem;">
-          Registrá tu negocio
-        </h2>
-        <p class="mini">
-          Tus datos se guardan en este navegador por ahora. Próximamente habrá registro oficial.
-        </p>
+      <!-- Header admin -->
+      <div class="admin-header">
+        <div>
+          <h2 class="admin-title">Panel de negocios</h2>
+          <p class="mini" id="adminSubtitle">Cargando…</p>
+        </div>
+        <div class="admin-header-actions">
+          <button class="btn outline btn-sm" id="btnExportar" type="button">↓ Exportar</button>
+          <button class="btn outline btn-sm" id="btnImportarBtn" type="button">↑ Importar</button>
+          <input type="file" id="importFile" accept=".json,application/json" />
+          <span class="import-count" id="importMsg"></span>
+        </div>
       </div>
 
-      <!-- Exportar / Importar -->
-      <div class="io-row">
-        <label>Datos:</label>
-        <button class="btn outline" id="btnExportar" type="button">
-          ↓ Exportar JSON
+      <!-- Tabs internos -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" id="atFormulario" type="button">＋ Agregar negocio</button>
+        <button class="admin-tab" id="atLista" type="button">
+          📋 Negocios guardados <span class="admin-count" id="adminCount">0</span>
         </button>
-        <button class="btn outline" id="btnImportarBtn" type="button">
-          ↑ Importar JSON
-        </button>
-        <input type="file" id="importFile" accept=".json,application/json" />
-        <span class="import-count" id="importMsg"></span>
       </div>
 
-      <form id="bizForm" onsubmit="return false;">
-        <div class="form-grid">
-
-          <div class="field">
-            <label for="nombre">Nombre del negocio *</label>
-            <input id="nombre" required placeholder="Ej: Ferretería La Esquina" />
+      <!-- PANEL A: FORMULARIO -->
+      <div id="adminPanelFormulario" class="admin-panel active">
+        <!-- Banner de modo edición -->
+        <div id="editBanner" class="edit-banner" style="display:none;">
+          <div>
+            ✏️ Editando: <strong class="edit-banner-nombre"></strong>
           </div>
-
-          <div class="field">
-            <label for="tipo">Tipo de negocio *</label>
-            <input id="tipo" required
-                   placeholder="Ej: Ferretería, Supermercado, Repuestos…" />
-          </div>
-
-          <div class="field">
-            <label for="provincia">Provincia *</label>
-            <select id="provincia" required>
-              <option value="">Seleccioná…</option>
-              <option>San José</option>
-              <option>Alajuela</option>
-              <option>Cartago</option>
-              <option>Heredia</option>
-              <option>Guanacaste</option>
-              <option>Puntarenas</option>
-              <option>Limón</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="canton">Cantón *</label>
-            <input id="canton" required placeholder="Ej: Desamparados" />
-          </div>
-
-          <div class="field">
-            <label for="distrito">Distrito</label>
-            <input id="distrito" placeholder="Ej: San Rafael Abajo" />
-          </div>
-
-          <div class="field">
-            <label for="horario">Horario *</label>
-            <input id="horario" required
-                   placeholder="Ej: L–V 7:00–18:00 / S 8:00–13:00" />
-          </div>
-
-          <div class="field">
-            <label for="telefono">Teléfono</label>
-            <input id="telefono" placeholder="+506 2222 3333" />
-          </div>
-
-          <div class="field">
-            <label for="whatsapp">WhatsApp</label>
-            <input id="whatsapp" placeholder="50688888888 (solo números)" />
-          </div>
-
-          <div class="field" style="grid-column: 1 / -1;">
-            <label for="maps">Link Google Maps</label>
-            <input id="maps"
-                   placeholder="Pegá aquí el enlace de Google Maps del negocio" />
-          </div>
-
-          <div class="field" style="grid-column: 1 / -1;">
-            <label for="descripcion">Descripción (opcional)</label>
-            <textarea id="descripcion"
-                      placeholder="Ej: Especialistas en herrajes, cerraduras y materiales de construcción…"></textarea>
-          </div>
-
+          <button type="button" onclick="cancelarEdicion()" class="edit-banner-cancel">
+            ✕ Cancelar edición
+          </button>
         </div>
 
-        <!-- Productos -->
-        <div class="divider">
-          <h3 style="font-size:1rem;font-weight:600;margin-bottom:.25rem;">
-            Productos y precios
-          </h3>
-          <p class="mini" style="margin-bottom:.875rem;">
-            Agregá los productos que vendés. Los usuarios te van a encontrar buscando estos nombres.
-          </p>
+        <form id="bizForm" onsubmit="return false;" novalidate>
 
-          <div id="rows" class="rows-wrap"></div>
+          <!-- PASO 1 -->
+          <div class="form-step">
+            <div class="form-step-header">
+              <span class="step-num">1</span>
+              <span class="step-title">Información básica</span>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="nombre">Nombre del negocio <span class="req">*</span></label>
+                <input id="nombre" required autocomplete="off"
+                       placeholder="Ej: Ferretería La Esquina" />
+              </div>
+              <div class="field">
+                <label for="tipo">Tipo de negocio <span class="req">*</span></label>
+                <select id="tipo" required>
+                  <option value="">Seleccioná…</option>
+                  <option>Ferretería</option>
+                  <option>Ferretería / Home Center</option>
+                  <option>Depósito de materiales</option>
+                  <option>Supermercado</option>
+                  <option>Supermercado mayorista</option>
+                  <option>Repuestos automotrices</option>
+                  <option>Mueblería</option>
+                  <option>Hogar y decoración</option>
+                  <option>Librería y papelería</option>
+                  <option>Farmacia</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+              <div class="field" style="grid-column:1/-1;">
+                <label for="horario">Horario <span class="req">*</span></label>
+                <input id="horario" required autocomplete="off"
+                       placeholder="Ej: L–V 7:00–18:00 / S 8:00–13:00 / D cerrado" />
+              </div>
+              <div class="field" style="grid-column:1/-1;">
+                <label for="descripcion">Descripción corta</label>
+                <textarea id="descripcion" rows="2"
+                          placeholder="Ej: Especialistas en herrajes, cerraduras y materiales de construcción. Más de 20 años."></textarea>
+              </div>
+            </div>
+          </div>
 
-          <div class="add-product-wrap">
-            <button class="btn outline" id="btnAddRow" type="button">
+          <!-- PASO 2 -->
+          <div class="form-step">
+            <div class="form-step-header">
+              <span class="step-num">2</span>
+              <span class="step-title">Ubicación</span>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="provincia">Provincia <span class="req">*</span></label>
+                <select id="provincia" required>
+                  <option value="">Seleccioná…</option>
+                  <option>San José</option>
+                  <option>Alajuela</option>
+                  <option>Cartago</option>
+                  <option>Heredia</option>
+                  <option>Guanacaste</option>
+                  <option>Puntarenas</option>
+                  <option>Limón</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="canton">Cantón <span class="req">*</span></label>
+                <select id="canton" required>
+                  <option value="">Primero elegí provincia</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="distrito">Distrito</label>
+                <input id="distrito" autocomplete="off" placeholder="Ej: San Rafael Abajo" />
+              </div>
+              <div class="field">
+                <label for="maps">Link Google Maps</label>
+                <input id="maps" type="url" autocomplete="off"
+                       placeholder="https://maps.app.goo.gl/…" />
+                <span class="field-hint">Google Maps → Compartir → Copiar enlace</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASO 3 -->
+          <div class="form-step">
+            <div class="form-step-header">
+              <span class="step-num">3</span>
+              <span class="step-title">Contacto</span>
+              <span class="step-optional">Todo opcional</span>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="telefono">Teléfono</label>
+                <input id="telefono" type="tel" autocomplete="off" placeholder="+506 2222 3333" />
+              </div>
+              <div class="field">
+                <label for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" autocomplete="off" placeholder="50688888888" />
+                <span class="field-hint">Solo dígitos, sin espacios ni guiones</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASO 4 -->
+          <div class="form-step">
+            <div class="form-step-header">
+              <span class="step-num">4</span>
+              <span class="step-title">Productos y precios</span>
+            </div>
+            <p class="mini" style="margin-bottom:.875rem;">
+              Agregá todos los productos. <strong>Enter</strong> en el nombre del producto salta a la siguiente fila.
+            </p>
+            <div class="products-cols-header">
+              <span>Nombre del producto</span>
+              <span>Moneda</span>
+              <span>Precio</span>
+              <span></span>
+            </div>
+            <div id="rows" class="rows-wrap"></div>
+            <button class="btn outline btn-add-product" id="btnAddRow" type="button">
               + Agregar producto
             </button>
           </div>
 
-          <div class="form-actions">
-            <button class="btn" id="btnGuardar" type="button">
-              Guardar negocio
-            </button>
-            <button class="btn outline" id="btnLimpiar" type="button">
-              Limpiar formulario
-            </button>
-            <button class="btn danger" id="btnBorrarTodo" type="button"
-                    title="Borra todos los negocios guardados localmente">
-              Borrar todo (local)
-            </button>
+          <!-- Acciones -->
+          <div class="form-final-actions">
+            <button class="btn btn-guardar" id="btnGuardar" type="button">✓ Guardar negocio</button>
+            <button class="btn outline btn-sm" id="btnLimpiar" type="button">Limpiar formulario</button>
+            <button class="btn danger btn-sm" id="btnBorrarTodo" type="button">🗑 Borrar todos los datos</button>
           </div>
 
-          <p id="msg"     class="ok"   style="display:none;"></p>
-          <p id="msgWarn" class="warn" style="display:none;"></p>
-        </div>
-      </form>
-    </section>
+          <div id="msg"     class="msg-ok"   style="display:none;"></div>
+          <div id="msgWarn" class="msg-warn" style="display:none;"></div>
 
+        </form>
+      </div>
+
+      <!-- PANEL B: LISTA -->
+      <div id="adminPanelLista" class="admin-panel" style="display:none;">
+        <div class="lista-toolbar">
+          <input id="listaBuscar" type="search" placeholder="Filtrar por nombre o tipo…" class="lista-search" />
+          <span class="mini" id="listaConteo"></span>
+        </div>
+        <div id="listaNegocios" class="lista-negocios"></div>
+      </div>
+
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -433,6 +488,25 @@
         wrap.remove();
         if (el("rows").children.length === 0) el("rows").appendChild(createRow());
       });
+
+      // Enter en nombre del producto → crea siguiente fila y la enfoca
+      wrap.querySelector(".p-name").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const allRows = [...document.querySelectorAll("#rows .price-row")];
+          const isLast  = allRows[allRows.length - 1] === wrap;
+          if (isLast) {
+            const newRow = createRow();
+            el("rows").appendChild(newRow);
+            newRow.querySelector(".p-name").focus();
+          } else {
+            // Avanza a la siguiente fila
+            const nextRow = allRows[allRows.indexOf(wrap) + 1];
+            nextRow?.querySelector(".p-name")?.focus();
+          }
+        }
+      });
+
       return wrap;
     }
 
@@ -638,7 +712,201 @@
       if (y) y.textContent = new Date().getFullYear();
 
       // Tabs
-      el("tabBuscar").addEventListener("click", () => setTab("buscar"));
+      // ── Cantones por provincia ──────────────────────────
+      const CANTONES = {
+        "San José":    ["San José","Escazú","Desamparados","Puriscal","Tarrazú","Aserrí","Mora","Goicoechea","Santa Ana","Alajuelita","Vásquez de Coronado","Acosta","Tibás","Moravia","Montes de Oca","Turrubares","Dota","Curridabat","Pérez Zeledón","León Cortés Castro"],
+        "Alajuela":    ["Alajuela","San Ramón","Grecia","San Mateo","Atenas","Naranjo","Palmares","Poás","Orotina","San Carlos","Zarcero","Sarchí","Upala","Los Chiles","Guatuso","Río Cuarto"],
+        "Cartago":     ["Cartago","Paraíso","La Unión","Jiménez","Turrialba","Alvarado","Oreamuno","El Guarco"],
+        "Heredia":     ["Heredia","Barva","Santo Domingo","Santa Bárbara","San Rafael","San Isidro","Belén","Flores","San Pablo","Sarapiquí"],
+        "Guanacaste":  ["Liberia","Nicoya","Santa Cruz","Bagaces","Carrillo","Cañas","Abangares","Tilarán","Nandayure","La Cruz","Hojancha"],
+        "Puntarenas":  ["Puntarenas","Esparza","Buenos Aires","Montes de Oro","Osa","Quepos","Golfito","Coto Brus","Parrita","Corredores","Garabito"],
+        "Limón":       ["Limón","Pococí","Siquirres","Talamanca","Matina","Guácimo"],
+      };
+
+      function actualizarCantones(){
+        const prov = el("provincia").value;
+        const sel  = el("canton");
+        const lista = CANTONES[prov] || [];
+        sel.innerHTML = lista.length
+          ? `<option value="">Seleccioná cantón…</option>` + lista.map(c=>`<option>${c}</option>`).join("")
+          : `<option value="">Primero elegí provincia</option>`;
+      }
+
+      el("provincia").addEventListener("change", actualizarCantones);
+
+      // ── Tabs internos admin ──────────────────────────────
+      function setAdminTab(which){
+        const isForm = which === "formulario";
+        el("atFormulario").classList.toggle("active", isForm);
+        el("atLista").classList.toggle("active", !isForm);
+        el("adminPanelFormulario").style.display = isForm ? "block" : "none";
+        el("adminPanelLista").style.display      = isForm ? "none" : "block";
+        if (!isForm) renderLista();
+      }
+
+      el("atFormulario").addEventListener("click", () => setAdminTab("formulario"));
+      el("atLista").addEventListener("click",      () => setAdminTab("lista"));
+
+      // ── Render lista de negocios ─────────────────────────
+      // ── Estado de edición ────────────────────────────────
+      let editandoId = null; // null = modo agregar, string = modo editar
+
+      function renderLista(filtro=""){
+        const all = loadBusinesses();
+        const fn  = filtro.toLowerCase();
+        const filtrados = fn
+          ? all.filter(b => b.nombre.toLowerCase().includes(fn) || b.tipo.toLowerCase().includes(fn))
+          : all;
+
+        el("listaConteo").textContent = `${filtrados.length} de ${all.length} negocio${all.length!==1?"s":""}`;
+        el("adminCount").textContent  = all.length;
+
+        const container = el("listaNegocios");
+        if (!filtrados.length){
+          container.innerHTML = `<div class="lista-empty">${fn ? "Sin coincidencias para <strong>"+fn+"</strong>." : "Todavía no hay negocios guardados."}</div>`;
+          return;
+        }
+
+        container.innerHTML = filtrados.map(b => {
+          const nProd = (b.productos||[]).length;
+          return `
+          <div class="lista-card" id="lcard-${b.id}">
+            <div class="lista-card-info">
+              <div class="lista-card-nombre">${b.nombre}</div>
+              <div class="lista-card-meta">
+                <span>${b.tipo}</span>
+                <span>·</span>
+                <span>📍 ${b.ubicacion?.provincia||""}, ${b.ubicacion?.canton||""}</span>
+                <span>·</span>
+                <span>📦 ${nProd} producto${nProd!==1?"s":""}</span>
+              </div>
+            </div>
+            <div class="lista-card-actions">
+              <button onclick="editarNegocio('${b.id}')" title="Editar negocio">✏️ Editar</button>
+              <button onclick="eliminarNegocio('${b.id}')" class="btn-del" title="Eliminar">🗑</button>
+            </div>
+          </div>`;
+        }).join("");
+      }
+
+      // ── Editar negocio ───────────────────────────────────
+      window.editarNegocio = function(id){
+        const b = loadBusinesses().find(n => n.id === id);
+        if (!b) return;
+
+        editandoId = id;
+
+        // Cambiar a la pestaña formulario
+        setAdminTab("formulario");
+
+        // Llenar campos básicos
+        el("nombre").value      = b.nombre || "";
+        el("horario").value     = b.horario || "";
+        el("descripcion").value = b.descripcion || "";
+        el("telefono").value    = b.telefono || "";
+        el("whatsapp").value    = b.whatsapp || "";
+        el("maps").value        = b.maps || "";
+
+        // Tipo
+        const tipoSel = el("tipo");
+        let tipoEncontrado = false;
+        for (let opt of tipoSel.options){
+          if (opt.value === b.tipo){ opt.selected = true; tipoEncontrado = true; break; }
+        }
+        if (!tipoEncontrado){
+          // Agregar opción dinámica si el tipo no está en la lista
+          const opt = document.createElement("option");
+          opt.value = opt.textContent = b.tipo;
+          opt.selected = true;
+          tipoSel.appendChild(opt);
+        }
+
+        // Provincia
+        el("provincia").value = b.ubicacion?.provincia || "";
+        actualizarCantones();
+
+        // Cantón — esperar un tick para que se llene el select
+        setTimeout(() => {
+          const cantonSel = el("canton");
+          const canton = b.ubicacion?.canton || "";
+          let found = false;
+          for (let opt of cantonSel.options){
+            if (opt.value === canton || opt.textContent === canton){
+              opt.selected = true; found = true; break;
+            }
+          }
+          if (!found && canton){
+            const opt = document.createElement("option");
+            opt.value = opt.textContent = canton;
+            opt.selected = true;
+            cantonSel.appendChild(opt);
+          }
+        }, 0);
+
+        el("distrito").value = b.ubicacion?.distrito || "";
+
+        // Productos
+        el("rows").innerHTML = "";
+        const prods = b.productos || [];
+        if (prods.length === 0){
+          el("rows").appendChild(createRow());
+        } else {
+          prods.forEach(p => el("rows").appendChild(createRow(p)));
+        }
+
+        // Cambiar apariencia del formulario a modo edición
+        el("btnGuardar").textContent = "✓ Guardar cambios";
+        el("btnGuardar").style.background = "#0d9488"; // teal para diferenciarlo
+        el("btnGuardar").style.borderColor = "#0d9488";
+
+        // Mostrar banner de edición
+        showMsg("", "");
+        const banner = el("editBanner");
+        banner.style.display = "flex";
+        banner.querySelector(".edit-banner-nombre").textContent = b.nombre;
+
+        // Scroll al formulario
+        el("bizForm").scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+
+      // ── Cancelar edición ─────────────────────────────────
+      window.cancelarEdicion = function(){
+        editandoId = null;
+        el("bizForm").reset();
+        el("rows").innerHTML = "";
+        el("rows").appendChild(createRow());
+        el("canton").innerHTML = "<option value=''>Primero elegí provincia</option>";
+        el("btnGuardar").textContent = "✓ Guardar negocio";
+        el("btnGuardar").style.background = "";
+        el("btnGuardar").style.borderColor = "";
+        el("editBanner").style.display = "none";
+        showMsg("","");
+      };
+
+      window.eliminarNegocio = function(id){
+        const b = loadBusinesses().find(n => n.id === id);
+        if (!b) return;
+        if (!confirm(`¿Eliminar "${b.nombre}"?\nEsta acción no se puede deshacer.`)) return;
+        saveBusinesses(loadBusinesses().filter(n => n.id !== id));
+        refreshFilterOptions();
+        updateAdminSubtitle();
+        el("adminCount").textContent = loadBusinesses().length;
+        renderLista(el("listaBuscar").value);
+      };
+
+      el("listaBuscar").addEventListener("input", (e) => renderLista(e.target.value));
+
+      // Actualizar contador al cargar
+      el("adminCount").textContent = loadBusinesses().length;
+
+      // ── Update subtitle ──────────────────────────────────
+      function updateAdminSubtitle(){
+        const n = loadBusinesses().length;
+        el("adminSubtitle").textContent = `${n} negocio${n!==1?"s":""} guardado${n!==1?"s":""} en este navegador`;
+      }
+      updateAdminSubtitle();
+
+            el("tabBuscar").addEventListener("click", () => setTab("buscar"));
       el("tabAgregar").addEventListener("click", () => setTab("agregar"));
       el("navBuscarMenu")?.addEventListener("click", e => { e.preventDefault(); setTab("buscar"); });
       el("navAgregar").addEventListener("click", e => { e.preventDefault(); setTab("agregar"); });
@@ -712,17 +980,46 @@
           }
         }
 
-        const all = loadBusinesses();
-        const id = window.crypto?.randomUUID ? crypto.randomUUID() : String(Date.now());
-        all.push({ id, nombre, tipo,
-          ubicacion:{provincia,canton,distrito},
-          horario, descripcion, telefono, whatsapp, maps, productos,
-          createdAt: new Date().toISOString() });
-        saveBusinesses(all);
-        refreshFilterOptions();
-        showMsg("¡Negocio guardado! Ya podés buscarlo en la pestaña Buscar.","");
-        setTab("buscar");
-        const q=el("q").value.trim(); if(q) runSearch(q);
+        let all = loadBusinesses();
+        if (editandoId) {
+          // MODO EDICIÓN: actualizar negocio existente
+          const idx = all.findIndex(n => n.id === editandoId);
+          if (idx !== -1){
+            all[idx] = { ...all[idx], nombre, tipo,
+              ubicacion:{provincia,canton,distrito},
+              horario, descripcion, telefono, whatsapp, maps, productos,
+              updatedAt: new Date().toISOString() };
+          }
+          saveBusinesses(all);
+          refreshFilterOptions();
+          updateAdminSubtitle();
+          el("adminCount").textContent = all.length;
+          // Reset modo edición
+          editandoId = null;
+          el("btnGuardar").textContent = "✓ Guardar negocio";
+          el("btnGuardar").style.background = "";
+          el("btnGuardar").style.borderColor = "";
+          el("editBanner").style.display = "none";
+          showMsg("✓ Cambios guardados correctamente.","");
+          el("rows").innerHTML = "";
+          el("rows").appendChild(createRow());
+          el("bizForm").reset();
+          el("canton").innerHTML = "<option value=''>Primero elegí provincia</option>";
+        } else {
+          // MODO NUEVO
+          const id = window.crypto?.randomUUID ? crypto.randomUUID() : String(Date.now());
+          all.push({ id, nombre, tipo,
+            ubicacion:{provincia,canton,distrito},
+            horario, descripcion, telefono, whatsapp, maps, productos,
+            createdAt: new Date().toISOString() });
+          saveBusinesses(all);
+          refreshFilterOptions();
+          updateAdminSubtitle();
+          el("adminCount").textContent = all.length;
+          showMsg("¡Negocio guardado! Ya podés buscarlo en la pestaña Buscar.","");
+          setTab("buscar");
+          const q=el("q").value.trim(); if(q) runSearch(q);
+        }
       });
 
       // Borrar todo
