@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UbiqoCR · Productos</title>
+  <meta name="description" content="Busca productos y encuentra negocios cercanos que los venden, con sus precios." />
+  <link rel="stylesheet" href="styles.css?v=prod-v3" />
+
+  <style>
+    .muted { color: #444; }
+    .mini { font-size: .9rem; color: #555; }
+
+    .panel {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1rem;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,.03);
+      margin-top: 1rem;
+    }
+
+    /* Tabs */
+    .tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+    .tab-btn {
+      border: 1px solid #e5e7eb; background: #fff;
+      padding: .55rem .9rem; border-radius: 999px;
+      cursor: pointer; font-weight: 800; font: inherit;
+    }
+    .tab-btn[aria-selected="true"] { background: #f3f4f6; border-color: #d1d5db; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Barra de búsqueda */
+    .searchbar { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: .75rem; }
+    .searchbar input {
+      flex: 1; min-width: 240px; padding: .7rem .8rem;
+      border: 1px solid #d1d5db; border-radius: 12px; font: inherit; background: #fff;
+      transition: border-color .15s;
+    }
+    .searchbar input:focus { outline: none; border-color: #1f6feb; box-shadow: 0 0 0 3px rgba(31,111,235,.1); }
+
+    /* Sugerencias de sinónimos */
+    .synonym-hint { margin-top: .5rem; font-size: .85rem; color: #555; min-height: 1.4em; }
+    .synonym-tag {
+      display: inline-block; background: #eff6ff; border: 1px solid #bfdbfe;
+      color: #1d4ed8; border-radius: 999px; padding: .1rem .5rem;
+      font-size: .8rem; margin: .1rem .15rem; cursor: pointer; transition: background .12s;
+    }
+    .synonym-tag:hover { background: #dbeafe; }
+
+    /* Filtros */
+    .filters-row { display: flex; gap: .6rem; flex-wrap: wrap; align-items: end; margin-top: .75rem; }
+    .filters-row .field { min-width: 180px; }
+
+    .divider { margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem; }
+
+    /* Ordenamiento */
+    .sort-row { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: .5rem; }
+    .sort-row label { font-size: .9rem; color: #555; font-weight: 600; }
+    .sort-row select {
+      padding: .35rem .55rem; border: 1px solid #d1d5db;
+      border-radius: 8px; font: inherit; font-size: .9rem; background: #fff;
+    }
+
+    /* Resultados */
+    .results { margin-top: .75rem; display: grid; gap: .8rem; }
+
+    .result-card {
+      border: 1px solid #eee; border-radius: 14px; padding: .9rem 1rem;
+      background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.03); transition: box-shadow .15s;
+    }
+    .result-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+
+    .result-top { display: flex; gap: .75rem; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
+
+    /* Score de relevancia */
+    .relevance-bar { display: flex; align-items: center; gap: .4rem; margin-top: .3rem; }
+    .relevance-dots { display: flex; gap: 3px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #e5e7eb; }
+    .dot.active { background: #1f6feb; }
+    .relevance-label { font-size: .78rem; color: #888; }
+
+    .badge {
+      display: inline-block; padding: .2rem .55rem; border-radius: 999px;
+      border: 1px solid #e5e7eb; background: #f9fafb;
+      font-size: .85rem; font-weight: 800; color: #333;
+    }
+    .result-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .6rem; }
+    .result-products { margin-top: .6rem; display: grid; gap: .35rem; }
+    .result-products .line {
+      display: flex; justify-content: space-between; gap: .75rem;
+      border-top: 1px dashed #eee; padding-top: .35rem;
+    }
+    .highlight { background: #fef9c3; border-radius: 3px; padding: 0 2px; font-weight: 700; }
+    .result-products .line.no-match { opacity: .55; }
+
+    /* Exportar/Importar */
+    .io-row {
+      display: flex; gap: .5rem; flex-wrap: wrap; align-items: center;
+      margin-top: .6rem; padding: .75rem 1rem;
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px;
+    }
+    .io-row label { font-size: .9rem; font-weight: 700; color: #333; margin-right: .25rem; }
+    #importFile { display: none; }
+    .import-count { font-size: .85rem; color: #0a7a2f; font-weight: 700; }
+
+    /* Formulario */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; margin-top: .75rem; }
+    @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: .35rem; }
+    .field label { font-weight: 800; color: #333; font-size: .95rem; }
+    .field input, .field select, .field textarea {
+      padding: .6rem .7rem; border: 1px solid #d1d5db; border-radius: 10px;
+      font: inherit; background: #fff; transition: border-color .15s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: #1f6feb; box-shadow: 0 0 0 3px rgba(31,111,235,.1);
+    }
+    .field textarea { resize: vertical; min-height: 90px; }
+
+    .rows-wrap { margin-top: .75rem; display: grid; gap: .6rem; }
+    .price-row { display: grid; grid-template-columns: 1.2fr .7fr .8fr auto; gap: .5rem; align-items: end; }
+    @media (max-width: 640px) {
+      .price-row { grid-template-columns: 1fr 1fr 1fr; }
+      .price-row .remove-btn { grid-column: 1 / -1; justify-self: start; }
+    }
+    .add-product-wrap { margin-top: .8rem; display: flex; justify-content: flex-start; }
+    .form-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .8rem; }
+
+    .ok { margin-top: .75rem; color: #0a7a2f; font-weight: 900; }
+    .warn { margin-top: .75rem; color: #9a3412; font-weight: 900; }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="logo" href="#">UbiqoCR</a>
+      <ul class="menu">
+        <li><a href="#" id="navBuscar">Productos</a></li>
+        <li><a href="#" id="navAgregar">Agregar negocio</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero center" style="padding: 2.2rem 1rem 1.2rem;">
+      <h1>UbiqoCR</h1>
+      <p class="subtitle">Encuentra productos y precios en negocios cercanos</p>
+      <div class="tabs" role="tablist" aria-label="Pestañas de UbiqoCR Productos">
+        <button class="tab-btn" id="tabBuscar" role="tab" aria-controls="panelBuscar" aria-selected="true" type="button">Buscar</button>
+        <button class="tab-btn" id="tabAgregar" role="tab" aria-controls="panelAgregar" aria-selected="false" type="button">Agregar negocio</button>
+      </div>
+    </section>
+
+    <!-- TAB 1: BUSCAR -->
+    <section class="panel tab-panel active" id="panelBuscar" role="tabpanel" aria-labelledby="tabBuscar">
+      <h2>Buscar producto</h2>
+      <p class="muted">Escribí el nombre del producto. Podés usar varias palabras para afinar la búsqueda.</p>
+
+      <div class="searchbar">
+        <input id="q" type="search" placeholder='Ej: "javín", "tornillos 3 pulgadas", "cinta aislante"...' autocomplete="off" />
+        <button class="btn" id="btnBuscar" type="button">Buscar</button>
+        <button class="btn outline" id="btnVerTodo" type="button">Ver todo</button>
+      </div>
+
+      <div class="synonym-hint" id="synonymHint" aria-live="polite"></div>
+
+      <div class="filters-row" aria-label="Filtros de ubicación">
+        <div class="field">
+          <label for="fProvincia">Provincia</label>
+          <select id="fProvincia"><option value="">Todas</option></select>
+        </div>
+        <div class="field">
+          <label for="fCanton">Cantón</label>
+          <select id="fCanton"><option value="">Todos</option></select>
+        </div>
+        <div class="field">
+          <label for="fDistrito">Distrito</label>
+          <select id="fDistrito"><option value="">Todos</option></select>
+        </div>
+        <div class="field" style="min-width:auto;">
+          <label>&nbsp;</label>
+          <button class="btn outline" id="btnLimpiarFiltros" type="button">Limpiar filtros</button>
+        </div>
+      </div>
+
+      <div class="divider">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.5rem;">
+          <div style="display:flex; align-items:center; gap:.75rem;">
+            <h3 style="margin:0;">Resultados</h3>
+            <span class="badge" id="count">0</span>
+          </div>
+          <div class="sort-row" style="margin-top:0;">
+            <label for="sortBy">Ordenar por:</label>
+            <select id="sortBy">
+              <option value="relevance">Relevancia</option>
+              <option value="name_asc">Nombre A–Z</option>
+              <option value="name_desc">Nombre Z–A</option>
+              <option value="price_asc">Precio menor</option>
+              <option value="price_desc">Precio mayor</option>
+            </select>
+          </div>
+        </div>
+        <div id="results" class="results" aria-live="polite"></div>
+        <p id="empty" class="mini" style="display:none; margin-top:.75rem;">
+          No hay resultados. Probá con otra palabra o agrega un negocio con ese producto.
+        </p>
+      </div>
+    </section>
+
+    <!-- TAB 2: AGREGAR NEGOCIO -->
+    <section class="panel tab-panel" id="panelAgregar" role="tabpanel" aria-labelledby="tabAgregar">
+      <h2>Agregar negocio</h2>
+      <p class="mini">Por ahora se guarda en tu navegador (localStorage).</p>
+
+      <div class="io-row">
+        <label>Datos:</label>
+        <button class="btn outline" id="btnExportar" type="button">⬇ Exportar JSON</button>
+        <button class="btn outline" id="btnImportarBtn" type="button">⬆ Importar JSON</button>
+        <input type="file" id="importFile" accept=".json,application/json" />
+        <span class="import-count" id="importMsg"></span>
+      </div>
+
+      <form id="bizForm" onsubmit="return false;">
+        <div class="form-grid">
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" required placeholder="Ej: Ferretería La Esquina" />
+          </div>
+          <div class="field">
+            <label for="tipo">Descripción (tipo)</label>
+            <input id="tipo" required placeholder="Ej: Ferretería / Supermercado..." />
+          </div>
+          <div class="field">
+            <label for="provincia">Provincia</label>
+            <select id="provincia" required>
+              <option value="">Seleccioná...</option>
+              <option>San José</option><option>Alajuela</option><option>Cartago</option>
+              <option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="canton">Cantón</label>
+            <input id="canton" required placeholder="Ej: Desamparados" />
+          </div>
+          <div class="field">
+            <label for="distrito">Distrito</label>
+            <input id="distrito" required placeholder="Ej: San Rafael Abajo" />
+          </div>
+          <div class="field">
+            <label for="horario">Horario</label>
+            <input id="horario" required placeholder="Ej: L–S 8:00–18:00" />
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono (opcional)</label>
+            <input id="telefono" placeholder="Ej: +506 2222 3333" />
+          </div>
+          <div class="field">
+            <label for="whatsapp">WhatsApp (opcional)</label>
+            <input id="whatsapp" placeholder="Ej: 50688888888" />
+          </div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="maps">Link de Google Maps (opcional)</label>
+            <input id="maps" placeholder="Pegá aquí el enlace del lugar en Google Maps" />
+          </div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="descripcion">Descripción adicional (opcional)</label>
+            <textarea id="descripcion" placeholder="Ej: Especialistas en herrajes y cerraduras..."></textarea>
+          </div>
+        </div>
+
+        <div class="divider">
+          <h3 style="margin:0;">Productos y precios</h3>
+          <p class="mini" style="margin-top:.35rem;">La búsqueda funciona con el nombre del producto.</p>
+          <div id="rows" class="rows-wrap"></div>
+          <div class="add-product-wrap">
+            <button class="btn outline" id="btnAddRow" type="button">+ Agregar producto</button>
+          </div>
+          <div class="form-actions">
+            <button class="btn" id="btnGuardar" type="button">Guardar negocio</button>
+            <button class="btn outline" id="btnLimpiar" type="button">Limpiar formulario</button>
+            <button class="btn back" id="btnBorrarTodo" type="button">Borrar todo (local)</button>
+          </div>
+          <p id="msg" class="ok" style="display:none;"></p>
+          <p id="msgWarn" class="warn" style="display:none;"></p>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> UbiqoCR</small>
+  </footer>
+
+  <script src="ubiqocr-seed-data.js"></script>
+  <script src="ubiqocr-inventario-completo.js"></script>
+  <script src="script.js"></script>
+  <script>
+  (function(){
+    "use strict";
+
+    const el = (id) => document.getElementById(id);
+    const STORAGE_KEY = "ubiqocr_productos_negocios_v2";
+
+    const normalize = (s) =>
+      (s || "").toString().trim().toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    const sanitizePhoneDigits = (s) => (s || "").toString().replace(/[^\d]/g, "");
+    const moneySymbol = (code) => (code === "CRC" ? "₡" : "$");
+
+    function loadBusinesses(){
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const data = raw ? JSON.parse(raw) : [];
+        return Array.isArray(data) ? data : [];
+      } catch { return []; }
+    }
+    function saveBusinesses(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+    function uniqSorted(arr){ return [...new Set(arr.filter(Boolean))].sort((a,b) => a.localeCompare(b,"es")); }
+
+    // =============================================
+    // SISTEMA DE SINÓNIMOS
+    // =============================================
+    const SINONIMOS = [
+      ["javin","llavin","pomo","manija","chapa","cerradura","perilla","manivela"],
+      ["candado","llave","seguro","traba"],
+      ["tornillo","tornillos","tuerca","tuercas","perno","pernos","esparrago"],
+      ["clavo","clavos","tachuelas","tachuela"],
+      ["silicon","silicona","adhesivo","pegamento","pega","cemento de contacto"],
+      ["cinta","cinta aislante","cinta adhesiva","tape","masking tape","teipe","dielectrica"],
+      ["pintura","pinturas","esmalte","latex","barniz","imprimante","anticorrosivo"],
+      ["cable","cables","alambre","alambres","conductor"],
+      ["tuberia","tubo","tubos","pvc","cano"],
+      ["llave de paso","valvula","valvulas","llave de agua"],
+      ["cemento","concreto","mortero","repello","mezcla"],
+      ["arena","lastre","grava","piedra cuarta"],
+      ["varilla","varillas","hierro","hierros","malla electrosolada"],
+      ["madera","tablon","tablones","regla","tabla","tablas"],
+      ["bisagra","bisagras","pernio","pernios"],
+      ["interruptor","tomacorriente","toma corriente","apagador","switch"],
+      ["foco","focos","bombillo","bombillos","led","lampara","lamparas"],
+      ["sierra","segueta","cuchilla","hoja de sierra"],
+      ["martillo","mazo","maceta"],
+      ["destornillador","desarmador"],
+      ["taladro","broca","brocas"],
+      ["manguera","mangueras"],
+      ["lija","papel lija","esmeril"],
+      ["soldadura","varilla de soldadura","electrodo"],
+      ["llanta","llantas","caucho","neumatico","goma"],
+      ["azucar","endulzante","panela"],
+      ["arroz","arroz blanco"],
+      ["frijoles","frijol","poroto","porotos"],
+      ["aceite","aceite vegetal","aceite de cocina"],
+      ["jamon","fiambre","embutido","mortadela","salchichon"],
+      ["leche","leche entera","leche descremada","lacteos"],
+      ["huevo","huevos","blanquillo"],
+      ["pan","pan de molde","pan de sandwich"],
+      ["detergente","jabon en polvo","suavizante","lavatrastos"],
+      ["shampoo","champu","acondicionador"],
+      ["papel higienico","papel sanitario","toalla de papel"],
+      ["escoba","trapeador","lampazo","cepillo de fregar"],
+      ["pila","pilas","bateria","baterias","recargable"],
+      ["silla","sillas","banqueta","taburete"],
+      ["mesa","mesita","escritorio"],
+      ["sofa","sillon","mueble","muebles"],
+      ["refrigerador","nevera","refrigeradora","hielera"],
+      ["lavadora","lavatopa","secadora"],
+      ["microondas","microonda","horno"],
+      ["ventilador","abanico","aire acondicionado","minisplit"],
+      ["television","tv","pantalla","monitor"],
+      ["aceite de motor","lubricante","aceite 20w50"],
+      ["filtro de aceite","filtro de aire","filtro de combustible"],
+      ["bateria de carro","acumulador"],
+      ["freno","frenos","pastillas de freno","disco de freno"],
+      ["amortiguador","amortiguadores"],
+      ["bujia","bujias","cables de bujia"],
+    ];
+
+    const _sinonimosIdx = new Map();
+    SINONIMOS.forEach((grupo, i) => grupo.forEach(t => _sinonimosIdx.set(normalize(t), i)));
+
+    function expandirTermino(termino){
+      const idx = _sinonimosIdx.get(termino);
+      return idx !== undefined ? SINONIMOS[idx].map(normalize) : [termino];
+    }
+
+    function expandirQuery(query){
+      const partes = normalize(query).split(/\s+/).filter(Boolean);
+      const sinonimosUsados = [];
+      const tokens = partes.map(parte => {
+        const grupo = expandirTermino(parte);
+        if (grupo.length > 1) sinonimosUsados.push({ original: parte, grupo });
+        return grupo;
+      });
+      return { tokens, sinonimosUsados };
+    }
+
+    function textoCoincide(texto, tokens){
+      const t = normalize(texto);
+      return tokens.every(grupo => grupo.some(sin => t.includes(sin)));
+    }
+
+    // =============================================
+    // SCORE DE RELEVANCIA (0–5)
+    // =============================================
+    function calcularScore(biz, tokens, queryRaw){
+      let score = 0;
+      const qn = normalize(queryRaw);
+      const matchCount = (biz.productos || []).filter(p => textoCoincide(p.producto, tokens)).length;
+      score += Math.min(matchCount * 1.5, 3);
+      if ((biz.productos || []).some(p => normalize(p.producto) === qn)) score += 1.5;
+      if (normalize(biz.nombre).includes(qn)) score += 0.5;
+      return Math.min(Math.round(score), 5);
+    }
+
+    // =============================================
+    // ORDENAMIENTO
+    // =============================================
+    function sortarResultados(list, modo){
+      const copy = [...list];
+      if (modo === "name_asc") return copy.sort((a,b) => a.nombre.localeCompare(b.nombre,"es"));
+      if (modo === "name_desc") return copy.sort((a,b) => b.nombre.localeCompare(a.nombre,"es"));
+      if (modo === "price_asc"){
+        const min = b => Math.min(...(b.matches||b.productos||[]).map(p=>p.precio??Infinity).filter(n=>!isNaN(n)));
+        return copy.sort((a,b) => min(a) - min(b));
+      }
+      if (modo === "price_desc"){
+        const max = b => Math.max(...(b.matches||b.productos||[]).map(p=>p.precio??-Infinity).filter(n=>!isNaN(n)));
+        return copy.sort((a,b) => max(b) - max(a));
+      }
+      return copy.sort((a,b) => (b._score||0) - (a._score||0));
+    }
+
+    // =============================================
+    // HIGHLIGHT
+    // =============================================
+    function highlightText(text, tokens){
+      let result = String(text);
+      tokens.flat().forEach(sin => {
+        if (!sin) return;
+        try {
+          const re = new RegExp(`(${sin.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})`, "gi");
+          result = result.replace(re, '<mark class="highlight">$1</mark>');
+        } catch(e){}
+      });
+      return result;
+    }
+
+    // =============================================
+    // TABS
+    // =============================================
+    function setTab(which){
+      const isBuscar = which === "buscar";
+      el("tabBuscar").setAttribute("aria-selected", isBuscar ? "true" : "false");
+      el("tabAgregar").setAttribute("aria-selected", isBuscar ? "false" : "true");
+      el("panelBuscar").classList.toggle("active", isBuscar);
+      el("panelAgregar").classList.toggle("active", !isBuscar);
+      setTimeout(() => (isBuscar ? el("q") : el("nombre"))?.focus(), 0);
+    }
+
+    // =============================================
+    // FILAS DINÁMICAS DE PRODUCTOS
+    // =============================================
+    function createRow(prefill = { producto:"", moneda:"CRC", precio:"" }){
+      const wrap = document.createElement("div");
+      wrap.className = "price-row";
+      wrap.innerHTML = `
+        <div class="field"><label>Producto</label>
+          <input class="p-name" required placeholder="Ej: Javín de puerta" value="${prefill.producto||""}"></div>
+        <div class="field"><label>Moneda</label>
+          <select class="p-cur" aria-label="Moneda">
+            <option value="CRC" ${prefill.moneda==="CRC"?"selected":""}>₡ Colón</option>
+            <option value="USD" ${prefill.moneda==="USD"?"selected":""}>$ Dólar</option>
+          </select></div>
+        <div class="field"><label>Precio</label>
+          <input class="p-price" required inputmode="decimal" placeholder="Ej: 3500" value="${prefill.precio||""}"></div>
+        <button class="btn outline remove-btn" type="button">Quitar</button>`;
+      wrap.querySelector(".remove-btn").addEventListener("click", () => {
+        wrap.remove();
+        if (el("rows").children.length === 0) el("rows").appendChild(createRow());
+      });
+      return wrap;
+    }
+
+    function readRows(){
+      return [...document.querySelectorAll("#rows .price-row")].map(r => ({
+        producto: r.querySelector(".p-name").value.trim(),
+        moneda: r.querySelector(".p-cur").value,
+        precio: r.querySelector(".p-price").value.trim() === ""
+          ? null : Number(r.querySelector(".p-price").value.trim().replace(",","."))
+      })).filter(p => p.producto.length > 0);
+    }
+
+    // =============================================
+    // MENSAJES
+    // =============================================
+    function showMsg(okText="", warnText=""){
+      el("msg").style.display = okText ? "block" : "none";
+      el("msgWarn").style.display = warnText ? "block" : "none";
+      el("msg").textContent = okText;
+      el("msgWarn").textContent = warnText;
+    }
+
+    // =============================================
+    // FILTROS DE UBICACIÓN
+    // =============================================
+    function refreshFilterOptions(){
+      const all = loadBusinesses();
+      const pSel=el("fProvincia"), cSel=el("fCanton"), dSel=el("fDistrito");
+      const curP=pSel.value, curC=cSel.value, curD=dSel.value;
+      pSel.innerHTML = `<option value="">Todas</option>` + uniqSorted(all.map(b=>b?.ubicacion?.provincia)).map(x=>`<option value="${x}">${x}</option>`).join("");
+      cSel.innerHTML = `<option value="">Todos</option>` + uniqSorted(all.map(b=>b?.ubicacion?.canton)).map(x=>`<option value="${x}">${x}</option>`).join("");
+      dSel.innerHTML = `<option value="">Todos</option>` + uniqSorted(all.map(b=>b?.ubicacion?.distrito)).map(x=>`<option value="${x}">${x}</option>`).join("");
+      pSel.value = curP; cSel.value = curC; dSel.value = curD;
+    }
+
+    function locationPasses(biz){
+      const fp=el("fProvincia").value, fc=el("fCanton").value, fd=el("fDistrito").value;
+      if (fp && biz?.ubicacion?.provincia !== fp) return false;
+      if (fc && biz?.ubicacion?.canton !== fc) return false;
+      if (fd && biz?.ubicacion?.distrito !== fd) return false;
+      return true;
+    }
+
+    // =============================================
+    // HINT DE SINÓNIMOS
+    // =============================================
+    function mostrarHintSinonimos(sinonimosUsados){
+      const hint = el("synonymHint");
+      if (!sinonimosUsados.length){ hint.innerHTML = ""; return; }
+      const partes = sinonimosUsados.map(s => {
+        const tags = s.grupo.filter(g=>g!==s.original).slice(0,5)
+          .map(g=>`<span class="synonym-tag" data-word="${g}">${g}</span>`).join(" ");
+        return `También buscando: ${tags}`;
+      });
+      hint.innerHTML = partes.join(" &nbsp;·&nbsp; ");
+      hint.querySelectorAll(".synonym-tag").forEach(tag => {
+        tag.addEventListener("click", () => { el("q").value = tag.dataset.word; runSearch(tag.dataset.word); });
+      });
+    }
+
+    // =============================================
+    // RENDER DE RESULTADOS
+    // =============================================
+    function renderResults(list, tokens=[]){
+      const results=el("results"), empty=el("empty");
+      el("count").textContent = String(list.length);
+      results.innerHTML = "";
+      if (!list.length){ empty.style.display="block"; return; }
+      empty.style.display = "none";
+      const showRelevance = tokens.length > 0;
+
+      for (const item of list){
+        const card = document.createElement("div");
+        card.className = "result-card";
+        const location = `${item.ubicacion.provincia}, ${item.ubicacion.canton}, ${item.ubicacion.distrito}`;
+        const phoneDigits = sanitizePhoneDigits(item.telefono);
+        const waDigits = sanitizePhoneDigits(item.whatsapp);
+        const waLink = waDigits ? `https://wa.me/${waDigits}` : "";
+        const mapsLink = (item.maps||"").trim();
+
+        let scoreHtml = "";
+        if (showRelevance && item._score !== undefined){
+          const dots = Array.from({length:5},(_,i)=>`<span class="dot${i<item._score?" active":""}"></span>`).join("");
+          scoreHtml = `<div class="relevance-bar"><div class="relevance-dots">${dots}</div><span class="relevance-label">relevancia</span></div>`;
+        }
+
+        const productLines = (item.matches||item.productos||[]).map(p => {
+          const sym = moneySymbol(p.moneda);
+          const price = (typeof p.precio==="number"&&!isNaN(p.precio)) ? p.precio.toLocaleString("es-CR") : (p.precio??"—");
+          const nombre = tokens.length ? highlightText(p.producto,tokens) : p.producto;
+          const isMatch = tokens.length ? textoCoincide(p.producto,tokens) : true;
+          return `<div class="line${!isMatch?" no-match":""}"><span><strong>${nombre}</strong></span><span>${sym}&nbsp;${price}</span></div>`;
+        }).join("");
+
+        const actions = `<div class="result-actions">
+          ${phoneDigits ? `<a class="btn" href="tel:+${phoneDigits}">Llamar</a>` : ""}
+          ${waLink ? `<a class="btn outline" target="_blank" rel="noopener" href="${waLink}">WhatsApp</a>` : ""}
+          ${mapsLink ? `<a class="btn outline" target="_blank" rel="noopener" href="${mapsLink}">Cómo llegar</a>` : ""}
+        </div>`;
+
+        card.innerHTML = `
+          <div class="result-top">
+            <div>
+              <h3 style="margin:0;">${item.nombre}</h3>
+              <div class="mini">${location}</div>
+              <div class="mini"><strong>Horario:</strong> ${item.horario}</div>
+              ${item.descripcion?`<div class="mini" style="margin-top:.35rem;">${item.descripcion}</div>`:""}
+              ${scoreHtml}
+            </div>
+            <span class="badge">${item.tipo}</span>
+          </div>
+          ${actions}
+          <div class="result-products">${productLines}</div>`;
+        results.appendChild(card);
+      }
+    }
+
+    // =============================================
+    // BÚSQUEDA PRINCIPAL
+    // =============================================
+    function runSearch(query){
+      const raw = (query !== undefined ? query : el("q").value).trim();
+      if (!raw){ el("synonymHint").innerHTML=""; renderResults([]); return; }
+
+      const { tokens, sinonimosUsados } = expandirQuery(raw);
+      mostrarHintSinonimos(sinonimosUsados);
+
+      const all = loadBusinesses();
+      const filtered = [];
+      for (const b of all){
+        if (!locationPasses(b)) continue;
+        const matchesProd = (b.productos||[]).filter(p => textoCoincide(p.producto, tokens));
+        const matchesBiz = !matchesProd.length &&
+          (textoCoincide(b.nombre,tokens) || textoCoincide(b.tipo,tokens));
+        if (matchesProd.length || matchesBiz){
+          filtered.push({ ...b,
+            matches: matchesProd.length ? matchesProd : (b.productos||[]),
+            _score: calcularScore(b, tokens, raw)
+          });
+        }
+      }
+      renderResults(sortarResultados(filtered, el("sortBy").value), tokens);
+    }
+
+    function showAll(){
+      el("synonymHint").innerHTML = "";
+      const all = loadBusinesses().filter(locationPasses).map(b=>({...b,matches:b.productos||[],_score:0}));
+      renderResults(sortarResultados(all, el("sortBy").value), []);
+    }
+
+    // =============================================
+    // EXPORTAR / IMPORTAR JSON
+    // =============================================
+    function exportarJSON(){
+      const all = loadBusinesses();
+      if (!all.length){ alert("No hay negocios guardados para exportar."); return; }
+      const blob = new Blob([JSON.stringify(all,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ubiqocr-negocios-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+
+    function importarJSON(file){
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (!Array.isArray(data)) throw new Error("El archivo no contiene un arreglo de negocios.");
+          const validos = data.filter(b => b && b.nombre && b.tipo && b.ubicacion && b.productos);
+          if (!validos.length) throw new Error("No se encontraron negocios válidos en el archivo.");
+
+          const existentes = loadBusinesses();
+          const idsExistentes = new Set(existentes.map(b => b.id));
+          const nuevos = validos.filter(b => !b.id || !idsExistentes.has(b.id));
+          saveBusinesses([...existentes, ...nuevos]);
+          refreshFilterOptions();
+
+          el("importMsg").textContent =
+            `✓ ${nuevos.length} negocio${nuevos.length!==1?"s":""} importado${nuevos.length!==1?"s":""}` +
+            (validos.length-nuevos.length > 0 ? ` (${validos.length-nuevos.length} ya existían)` : "");
+          setTimeout(() => { el("importMsg").textContent = ""; }, 5000);
+        } catch(err){ alert("Error al importar: " + err.message); }
+        el("importFile").value = "";
+      };
+      reader.readAsText(file);
+    }
+
+    // =============================================
+    // INIT + EVENTOS
+    // =============================================
+    window.addEventListener("DOMContentLoaded", () => {
+      el("tabBuscar").addEventListener("click", () => setTab("buscar"));
+      el("tabAgregar").addEventListener("click", () => setTab("agregar"));
+      el("navBuscar").addEventListener("click", (e) => { e.preventDefault(); setTab("buscar"); });
+      el("navAgregar").addEventListener("click", (e) => { e.preventDefault(); setTab("agregar"); });
+
+      el("rows").appendChild(createRow());
+      el("btnAddRow").addEventListener("click", () => el("rows").appendChild(createRow()));
+
+      refreshFilterOptions();
+      ["fProvincia","fCanton","fDistrito"].forEach(id => {
+        el(id).addEventListener("change", () => { const q=el("q").value.trim(); if(q) runSearch(q); else showAll(); });
+      });
+      el("btnLimpiarFiltros").addEventListener("click", () => {
+        el("fProvincia").value = el("fCanton").value = el("fDistrito").value = "";
+        const q = el("q").value.trim(); if(q) runSearch(q); else renderResults([]);
+      });
+
+      el("sortBy").addEventListener("change", () => { const q=el("q").value.trim(); if(q) runSearch(q); else showAll(); });
+
+      el("btnBuscar").addEventListener("click", () => runSearch());
+      el("q").addEventListener("keydown", (e) => { if(e.key==="Enter"){ e.preventDefault(); runSearch(); } });
+
+      let debounce;
+      el("q").addEventListener("input", () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(() => {
+          const q = el("q").value.trim();
+          if (q.length >= 2) runSearch(); else if (q.length===0){ el("synonymHint").innerHTML=""; renderResults([]); }
+        }, 300);
+      });
+
+      el("btnVerTodo").addEventListener("click", showAll);
+      el("btnExportar").addEventListener("click", exportarJSON);
+      el("btnImportarBtn").addEventListener("click", () => el("importFile").click());
+      el("importFile").addEventListener("change", (e) => importarJSON(e.target.files[0]));
+
+      el("btnLimpiar").addEventListener("click", () => {
+        el("bizForm").reset(); el("rows").innerHTML="";
+        el("rows").appendChild(createRow()); showMsg("","");
+      });
+
+      el("btnGuardar").addEventListener("click", () => {
+        showMsg("","");
+        const nombre=el("nombre").value.trim(), tipo=el("tipo").value.trim(),
+          provincia=el("provincia").value.trim(), canton=el("canton").value.trim(),
+          distrito=el("distrito").value.trim(), horario=el("horario").value.trim(),
+          descripcion=el("descripcion").value.trim(), telefono=el("telefono").value.trim(),
+          whatsapp=el("whatsapp").value.trim(), maps=el("maps").value.trim(),
+          productos=readRows();
+
+        if (!nombre||!tipo||!provincia||!canton||!distrito||!horario){
+          showMsg("","Completá todos los campos obligatorios del negocio."); return;
+        }
+        if (!productos.length){ showMsg("","Agregá al menos 1 producto."); return; }
+        for (const p of productos){
+          if (!p.producto||p.precio===null||isNaN(p.precio)){
+            showMsg("","Revisá los productos: nombre y precio deben estar completos."); return;
+          }
+        }
+
+        const all = loadBusinesses();
+        const id = window.crypto?.randomUUID ? crypto.randomUUID() : String(Date.now());
+        all.push({ id, nombre, tipo, ubicacion:{provincia,canton,distrito},
+          horario, descripcion, telefono, whatsapp, maps, productos,
+          createdAt: new Date().toISOString() });
+        saveBusinesses(all);
+        refreshFilterOptions();
+        showMsg("¡Negocio guardado! Ya podés buscarlo en la pestaña Buscar.","");
+        setTab("buscar");
+        const q = el("q").value.trim(); if(q) runSearch(q);
+      });
+
+      el("btnBorrarTodo").addEventListener("click", () => {
+        if (!confirm("¿Seguro? Esto borra TODOS los negocios guardados en este navegador.")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        refreshFilterOptions(); renderResults([]); el("synonymHint").innerHTML="";
+        showMsg("Listo: se borraron los negocios guardados localmente.","");
+      });
+
+      renderResults([]); setTab("buscar");
+    });
+
+  })();
+  </script>
+</body>
+</html>
