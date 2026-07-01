@@ -355,6 +355,7 @@
   <script src="ubiqocr-seed-data.js"></script>
   <script src="ubiqocr-inventario-completo.js"></script>
   <script src="script.js"></script>
+  <script src="api.js"></script>
 
   <script>
   (function(){
@@ -635,10 +636,18 @@
             ? p.precio.toLocaleString("es-CR") : (p.precio??"—");
           const nombre = tokens.length ? highlightText(p.producto,tokens) : p.producto;
           const isMatch = tokens.length ? textoCoincide(p.producto,tokens) : true;
-          return `<div class="line${!isMatch?" no-match":""}">
-            <span class="prod-name">${nombre}</span>
-            <span class="prod-price">${sym}&nbsp;${price}</span>
-          </div>`;
+          const imgHtml = p.imagen
+            ? `<img src="${p.imagen}" alt="${p.producto}" style="width:44px;height:44px;object-fit:contain;border-radius:6px;background:#f8fafc;flex-shrink:0;" onerror="this.style.display='none'">`
+            : "";
+          const linkHtml = p.url
+            ? `<a href="${p.url}" target="_blank" rel="noopener" style="font-size:.7rem;color:#2563eb;white-space:nowrap;text-decoration:none;margin-left:.5rem;">Ver →</a>`
+            : "";
+          return `<div class="line${!isMatch?" no-match":""}" style="${imgHtml?"display:flex;align-items:center;gap:.5rem;":""}">
+            ${imgHtml}
+          <span class="prod-name" style="flex:1;">${nombre}</span>
+          <span class="prod-price">${sym}&nbsp;${price}</span>
+          ${linkHtml}
+        </div>`;
         }).join("");
 
         // Acciones
@@ -676,13 +685,34 @@
     }
 
     // ── Búsqueda ─────────────────────────────────────────
-    function runSearch(query){
+    async function runSearch(query){
       const raw = (query !== undefined ? query : el("q").value).trim();
       if (!raw){ el("synonymHint").innerHTML=""; renderResults([]); return; }
 
       const { tokens, sinonimosUsados } = expandirQuery(raw);
       mostrarHintSinonimos(sinonimosUsados);
 
+      // ── Intentar API primero ────────────────────────────
+      if (typeof buscarProductosAPI === "function") {
+        const filtros = {
+          provincia: el("fProvincia").value,
+          canton:    el("fCanton").value,
+          distrito:  el("fDistrito").value,
+          orden:     el("sortBy").value,
+        };
+        const apiResultados = await buscarProductosAPI(raw, filtros);
+        if (apiResultados !== null) {
+          // API respondió — usamos esos resultados
+          const conMatches = apiResultados.map(b => ({
+            ...b,
+            matches: b.productos || [],
+          }));
+          renderResults(conMatches, tokens);
+          return;
+        }
+      }
+
+      // ── Fallback: localStorage ──────────────────────────
       const all = loadBusinesses();
       const filtered = [];
       for (const b of all){
