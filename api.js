@@ -24,7 +24,7 @@ const DATA_FILES = [
   { file: "/data/epa.json",   negocio: "EPA" },
   { file: "/data/novex.json",   negocio: "Novex" },
   // { file: "/data/lagar.json",   negocio: "El Lagar" },
-  // { file: "/data/masxmenos.json", negocio: "MasxMenos" },
+  { file: "/data/masxmenos.json", negocio: "MasxMenos" },
 ];
 
 // ── Cache de productos estáticos ────────────────────────────

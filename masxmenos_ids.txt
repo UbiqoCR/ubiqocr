@@ -1,0 +1,595 @@
+# MasxMenos Category IDs - 01/07/2026 20:05
+# Total: 568 subcategorias
+
+
+# Jugos y Bebidas
+147	Agua Natural	Jugos y Bebidas
+148	Agua Saborizada	Jugos y Bebidas
+149	Envase Agua	Jugos y Bebidas
+150	Garrafones	Jugos y Bebidas
+152	Te listo para beber	Jugos y Bebidas
+153	Energizante	Jugos y Bebidas
+154	Hidratante	Jugos y Bebidas
+155	Light y Sin Azúcar	Jugos y Bebidas
+156	Sabor Cola	Jugos y Bebidas
+157	Sabores Varios	Jugos y Bebidas
+158	Bebida Natural	Jugos y Bebidas
+159	Jugo de Frutas	Jugos y Bebidas
+160	Jugos naturales	Jugos y Bebidas
+161	Néctar	Jugos y Bebidas
+754	Jugo de Verduras	Jugos y Bebidas
+21649	Bebida de Soya	Jugos y Bebidas
+21650	Bebida de Almendra	Jugos y Bebidas
+21651	Bebida de Coco	Jugos y Bebidas
+162	Bebidas en Polvo	Jugos y Bebidas
+163	Líquido Concentrado	Jugos y Bebidas
+
+# Cervezas, Vinos y Licores
+164	Artesanales e Importadas	Cervezas, Vinos y Licores
+167	Coolers	Cervezas, Vinos y Licores
+168	Rompope	Cervezas, Vinos y Licores
+169	Brandy	Cervezas, Vinos y Licores
+170	Cognac	Cervezas, Vinos y Licores
+171	Ginebra	Cervezas, Vinos y Licores
+172	Ron	Cervezas, Vinos y Licores
+173	Tequila	Cervezas, Vinos y Licores
+174	Vodka	Cervezas, Vinos y Licores
+175	Whisky	Cervezas, Vinos y Licores
+176	Champagne y Espumoso	Cervezas, Vinos y Licores
+177	Sidras	Cervezas, Vinos y Licores
+178	Vino Blanco	Cervezas, Vinos y Licores
+179	Vino Tinto	Cervezas, Vinos y Licores
+767	Vino Rosado	Cervezas, Vinos y Licores
+790	Cooler	Cervezas, Vinos y Licores
+
+# Higiene y Belleza
+206	Cuidado de la Mujer	Higiene y Belleza
+207	Cuidado del Hombre	Higiene y Belleza
+208	Accesorios cosméticos	Higiene y Belleza
+209	Brillos labiales	Higiene y Belleza
+210	Delineador de labios	Higiene y Belleza
+211	Delineador de ojos y cejas	Higiene y Belleza
+212	Desmaquillantes y agua micelar	Higiene y Belleza
+213	Labiales	Higiene y Belleza
+214	Maquillaje para piel grasa	Higiene y Belleza
+215	Polvo compacto	Higiene y Belleza
+216	Rubores y Bronceadores	Higiene y Belleza
+217	Sombra para ojos	Higiene y Belleza
+781	Delineadoror de ojos y cejas	Higiene y Belleza
+218	Cepillo dental	Higiene y Belleza
+219	Enjuague bucal	Higiene y Belleza
+220	Higiene bucal para niños	Higiene y Belleza
+221	Hilo dental y artículos especializados	Higiene y Belleza
+222	Pasta dental	Higiene y Belleza
+223	Acondicionadores	Higiene y Belleza
+224	Cepillos, Planchas y Accesorios	Higiene y Belleza
+225	Gel, mousse y spray	Higiene y Belleza
+226	Shampoo	Higiene y Belleza
+227	Shampoo Anticaspa	Higiene y Belleza
+228	Shampoo Infantil	Higiene y Belleza
+229	Shampoos profesionales y tratamientos capilares	Higiene y Belleza
+230	Tinte femenino	Higiene y Belleza
+231	Tinte masculino	Higiene y Belleza
+232	Tratamiento capilar	Higiene y Belleza
+748	Crema para peinar	Higiene y Belleza
+233	Accesorios faciales	Higiene y Belleza
+235	Cotonetes y algodones	Higiene y Belleza
+236	Crema facial	Higiene y Belleza
+237	Desmaquillante	Higiene y Belleza
+238	Tratamiento facial	Higiene y Belleza
+131	Incontinencia	Higiene y Belleza
+239	Toallas y tampones	Higiene y Belleza
+241	Accesorios para ducha	Higiene y Belleza
+242	Bloqueadores y Bronceadores	Higiene y Belleza
+243	Crema corporal	Higiene y Belleza
+244	Desodorante femenino	Higiene y Belleza
+245	Desodorante masculino	Higiene y Belleza
+246	Fragancias	Higiene y Belleza
+247	Jabón de tocador	Higiene y Belleza
+248	Jabón y gel corporal	Higiene y Belleza
+249	Tratamiento corporal	Higiene y Belleza
+783	Desodoranteante masculino	Higiene y Belleza
+250	Crema para manos	Higiene y Belleza
+251	Esmaltes	Higiene y Belleza
+252	Jabón líquido	Higiene y Belleza
+253	Manicure	Higiene y Belleza
+254	Quitaesmaltes	Higiene y Belleza
+801	Jabón líquido para manos	Higiene y Belleza
+255	Básicos	Higiene y Belleza
+256	Pañuelos desechables	Higiene y Belleza
+802	Pañuelo desechable	Higiene y Belleza
+
+# Bebes y Niños
+394	Adornos de fiestas	Bebes y Niños
+395	Desechables para Fiesta	Bebes y Niños
+396	Envolturas para regalo	Bebes y Niños
+397	Globos	Bebes y Niños
+398	Invitaciones y Tarjetas	Bebes y Niños
+399	Velas de cumpleaños	Bebes y Niños
+400	Accesorios de lactancia	Bebes y Niños
+401	Biberones y tetinas	Bebes y Niños
+402	Cereales y galletas para bebé	Bebes y Niños
+403	Colados 1ra etapa	Bebes y Niños
+404	Colados 2da etapa	Bebes y Niños
+405	Colados 3ra etapa	Bebes y Niños
+406	Colados 4ta etapa y junior	Bebes y Niños
+407	Platos, vasos y cubiertos para niños	Bebes y Niños
+849	Fórmulas lácteas	Bebes y Niños
+408	Accesorios Para Bebes	Bebes y Niños
+409	Coches, asientos de auto y canguros	Bebes y Niños
+410	Cunas y encierros	Bebes y Niños
+414	Accesorios para baño de Bebes	Bebes y Niños
+415	Crema, gel y loción para bebé	Bebes y Niños
+416	Shampoo y jabón para bebé	Bebes y Niños
+417	Talco y aceite para bebé	Bebes y Niños
+427	Juguetes para bebes	Bebes y Niños
+428	Juguetes preescolar	Bebes y Niños
+429	Ecológicos, entrenadores y para nadar	Bebes y Niños
+430	Pañales Recién Nacido y Etapa 1	Bebes y Niños
+770	Pañales - Etapa 2	Bebes y Niños
+771	Pañales - Etapa 3	Bebes y Niños
+772	Pañales - Etapa 4	Bebes y Niños
+773	Pañales - Etapa 5	Bebes y Niños
+774	Pañales - Etapa 6	Bebes y Niños
+775	Pañales - Etapa 7	Bebes y Niños
+926	Toallitas Húmedas	Bebes y Niños
+1034	Toallitas Húmedas	Bebes y Niños
+
+# Alimentos Congelados
+441	Comida Congelada	Alimentos Congelados
+442	Comida Infantil	Alimentos Congelados
+443	Papas Congeladas	Alimentos Congelados
+444	Pescados y Mariscos	Alimentos Congelados
+445	Pollo Preparado	Alimentos Congelados
+446	Tacos, pizzas y pastas	Alimentos Congelados
+447	Frutas Congeladas	Alimentos Congelados
+448	Verduras Congeladas	Alimentos Congelados
+449	Hielo	Alimentos Congelados
+450	Helados	Alimentos Congelados
+451	Hot Cakes y Wafles	Alimentos Congelados
+452	Pay y Pasteles	Alimentos Congelados
+744	Barquillos y Conos	Alimentos Congelados
+791	Hielo Empacado	Alimentos Congelados
+
+# Lácteos
+455	Regular	Lácteos
+456	Gelatinas	Lácteos
+457	Postres	Lácteos
+458	Blanco	Lácteos
+459	Marrón	Lácteos
+759	Pastoreo y Especializado	Lácteos
+460	Condensada	Lácteos
+461	En Polvo	Lácteos
+462	Evaporada	Lácteos
+463	Leche Deslactosada	Lácteos
+464	Leche Entera	Lácteos
+465	Leche Especializada	Lácteos
+466	Leche Light	Lácteos
+467	Leche Saborizada	Lácteos
+468	Leche Semi y Descremada	Lácteos
+793	Leche de Soya	Lácteos
+469	Mantequillas	Lácteos
+470	Margarinas	Lácteos
+471	Más Quesos	Lácteos
+472	Queso Cottage	Lácteos
+473	Queso Fresco	Lácteos
+474	Queso Manchego	Lácteos
+475	Queso Mozzarella	Lácteos
+476	Queso Parmesano	Lácteos
+760	Queso Americano	Lácteos
+761	Queso Crema	Lácteos
+477	Mezcla de quesos Gourmet	Lácteos
+478	Queso Brie	Lácteos
+479	Queso de cabra	Lácteos
+480	Queso Edam	Lácteos
+481	Queso Jack	Lácteos
+482	Yogurt Batido	Lácteos
+483	Yogurt Bebible	Lácteos
+484	Yogurt Natural	Lácteos
+
+# Abarrotes
+485	Aceite de Canola	Abarrotes
+486	Aceite de Maíz	Abarrotes
+487	Aceite de Oliva	Abarrotes
+488	Aceite de Semillas y Vegetal	Abarrotes
+489	Aceite Spray	Abarrotes
+490	Manteca	Abarrotes
+788	Manteca Vegetal	Abarrotes
+491	Comida Rápida	Abarrotes
+492	Cremas Instantáneas	Abarrotes
+493	Pasta y Sopa Instantánea	Abarrotes
+494	Pure instantáneo	Abarrotes
+495	Arroz	Abarrotes
+496	Frijol	Abarrotes
+497	Leguminosas	Abarrotes
+498	Semillas	Abarrotes
+499	Azúcar	Abarrotes
+500	Gelatinas de Leche en Polvo	Abarrotes
+501	Gelatinas y Flan	Abarrotes
+502	Sustituto de Azúcar	Abarrotes
+151	Café listo para beber	Abarrotes
+503	Café en grano	Abarrotes
+504	Café Molido	Abarrotes
+505	Cápsulas de café	Abarrotes
+506	Crema para café	Abarrotes
+507	Filtros para café	Abarrotes
+508	Té Medicinales	Abarrotes
+509	Avena y Granola	Abarrotes
+510	Barras de Cereal	Abarrotes
+511	Cereal Dulce	Abarrotes
+512	De Fibra y Light	Abarrotes
+513	Bombones	Abarrotes
+514	Caramelos	Abarrotes
+515	Chicles	Abarrotes
+516	Chocolates	Abarrotes
+517	Gomitas	Abarrotes
+518	Sin Azúcar	Abarrotes
+519	Aceitunas	Abarrotes
+520	Atún y Pescado	Abarrotes
+521	Carnes Enlatadas	Abarrotes
+522	Frijoles instantáneos	Abarrotes
+523	Frutas en Almíbar	Abarrotes
+524	Mariscos Enlatados	Abarrotes
+525	Sopas y Cremas	Abarrotes
+526	Vegetales Enlatados	Abarrotes
+527	Consomés	Abarrotes
+528	Especias	Abarrotes
+529	Sal y Condimentos	Abarrotes
+530	Sazonadores	Abarrotes
+531	Galletas	Abarrotes
+532	Galletas de Avena y Cereal	Abarrotes
+533	Galletas Dulces	Abarrotes
+534	Galletas Integrales	Abarrotes
+535	Galletas Saladas	Abarrotes
+536	Chocolates para Repostería	Abarrotes
+537	De Arroz	Abarrotes
+538	Harina de Trigo y Maíz	Abarrotes
+539	Para Hot Cakes	Abarrotes
+540	Repostería	Abarrotes
+541	Saborizantes Artificiales	Abarrotes
+542	Condensada	Abarrotes
+543	En Polvo	Abarrotes
+544	Evaporada	Abarrotes
+545	Leche Deslactosada	Abarrotes
+546	Leche Entera	Abarrotes
+547	Leche Especializada	Abarrotes
+548	Leche Light	Abarrotes
+549	Leche Saborizada	Abarrotes
+550	Leche Semi y Descremada	Abarrotes
+551	Cajeta y Dulce de Leche	Abarrotes
+552	Crema de Avellana y Mantequilla de Maní	Abarrotes
+553	Mermelada	Abarrotes
+554	Miel	Abarrotes
+555	Otras Mieles	Abarrotes
+557	Fusilli	Abarrotes
+558	Pasta Especial	Abarrotes
+559	Pasta Precocida	Abarrotes
+560	Salsa para Pasta y Pizza	Abarrotes
+561	Spaghetti	Abarrotes
+750	Fetuccini	Abarrotes
+562	Aderezos y Vinagretas	Abarrotes
+563	Cátsup y Mostaza	Abarrotes
+564	Mayonesa	Abarrotes
+565	Salsa de Soya y Teriyaki	Abarrotes
+566	Salsa Picante	Abarrotes
+567	Salsas Caseras	Abarrotes
+568	Salsas para Sazonar	Abarrotes
+569	Vinagre	Abarrotes
+570	Chicharrones	Abarrotes
+571	Dip	Abarrotes
+572	Frutas Secas	Abarrotes
+573	Maní y otras semillas	Abarrotes
+574	Mix de semillas	Abarrotes
+575	Nueces y Almendras	Abarrotes
+576	Palomitas	Abarrotes
+577	Papas y frituras	Abarrotes
+578	Snacks	Abarrotes
+784	Sal y Condimentos	Abarrotes
+785	Sazonadores	Abarrotes
+786	Consomés	Abarrotes
+787	Especias	Abarrotes
+927	Bebida de Soya	Abarrotes
+1035	Bebida de Soya	Abarrotes
+21652	Alimentos Veganos	Abarrotes
+
+# Limpieza
+608	Escobas, Cepillos y Escurridores de Piso	Limpieza
+609	Fibras y esponjas	Limpieza
+610	Guantes	Limpieza
+611	Prensas de Ropa y Tendederos	Limpieza
+612	Tinas y Cubetas	Limpieza
+613	Trapeadores y Quitapelusas	Limpieza
+758	Paños y Franelas	Limpieza
+762	Recogedores	Limpieza
+614	Aromatizante ambiental	Limpieza
+741	Aromatizante de baño	Limpieza
+615	Colorantes	Limpieza
+616	Bolsas para Basura	Limpieza
+617	Bolsas para Cocina	Limpieza
+618	Palillos y Pajillas	Limpieza
+619	Papel aluminio y adherente	Limpieza
+620	Servilletas	Limpieza
+621	Toallas de cocina	Limpieza
+622	Vasos y platos	Limpieza
+623	Detergente en polvo	Limpieza
+624	Detergente líquido	Limpieza
+625	Jabón de Barra	Limpieza
+626	Lavaplatos en polvo y en pasta	Limpieza
+627	Lavaplatos líquido	Limpieza
+628	Cera para Pisos	Limpieza
+629	Cloro	Limpieza
+630	Cuidado para Zapatos	Limpieza
+631	Desinfectantes	Limpieza
+632	Destapacaños	Limpieza
+633	Insecticidas y Trampas	Limpieza
+634	Limpiadores de Cocina	Limpieza
+635	Limpiadores Multiusos	Limpieza
+755	Limpiadores de Baño	Limpieza
+765	Toallitas Desinfectantes	Limpieza
+21655	Alimento Húmedo Para Gatos	Limpieza
+21656	Alimento Húmedo Para Perros	Limpieza
+1079	12 Rollos	Limpieza
+1080	4 Rollos	Limpieza
+1081	16 Rollos	Limpieza
+1082	18 Rollos	Limpieza
+1083	1 Rollos	Limpieza
+1084	100 Rollos	Limpieza
+1085	144 Rollos	Limpieza
+1086	2 Rollos	Limpieza
+1087	20 Rollos	Limpieza
+1088	24 Rollos	Limpieza
+1089	3 Rollos	Limpieza
+1090	32 Rollos	Limpieza
+1091	34 Rollos	Limpieza
+1092	36 Rollos	Limpieza
+1093	40 Rollos	Limpieza
+1094	48 Rollos	Limpieza
+1095	6 Rollos	Limpieza
+1096	632 Rollos	Limpieza
+1097	8 Rollos	Limpieza
+1098	80 Rollos	Limpieza
+1099	9 Rollos	Limpieza
+1100	96 Rollos	Limpieza
+1270	Papel Higiénico Húmedo	Limpieza
+646	Quitamanchas liquido	Limpieza
+798	Quitamanchas en Polvo	Limpieza
+647	Suavizante Regular	Limpieza
+
+# Farmacia
+650	Preservativos	Farmacia
+651	Lubricantes Íntimos	Farmacia
+740	Anticonceptivos	Farmacia
+1105	Disfunción Eréctil	Farmacia
+1106	Hormonas sexuales	Farmacia
+1107	Prostata	Farmacia
+1108	Incontinencia urinaria	Farmacia
+768	Equipos Médicos	Farmacia
+853	Suplementos Deportivos	Farmacia
+1103	Electrolitos	Farmacia
+1104	Proteínas y Creatina	Farmacia
+1171	Antiacné	Farmacia
+1172	Antiinfecciosos	Farmacia
+1173	Antiinflamatorios	Farmacia
+1174	Cuidado y protección	Farmacia
+1278	Sistema nervioso	Farmacia
+948	Alcohol y Antisépticos	Farmacia
+949	Algodón e Hisopos	Farmacia
+950	Botiquines	Farmacia
+951	Primeros Auxilios	Farmacia
+1055	Curitas y Vendajes	Farmacia
+1056	Alcohol y Antisépticos	Farmacia
+1057	Algodón e Hisopos	Farmacia
+1058	Botiquines	Farmacia
+1269	Equipo médico	Farmacia
+1110	Antiácidos	Farmacia
+1111	Antidiarreicos y Suero Oral	Farmacia
+1112	Antiespasmodicos	Farmacia
+1113	Enzimas digestivas	Farmacia
+1114	Flora intestinal	Farmacia
+1115	Ulceras gastricas	Farmacia
+1177	Antiflatulentos	Farmacia
+1178	Laxantes y Fibra	Farmacia
+1180	Tratamiento Hepático	Farmacia
+1117	Antioxidantes	Farmacia
+1118	Calcio y Minerales	Farmacia
+1119	Colágeno	Farmacia
+1120	Complejo B	Farmacia
+1122	Inmunidad	Farmacia
+1123	Jarabe de adulto	Farmacia
+1124	Jarabe niños	Farmacia
+1125	Memoria	Farmacia
+1126	Multivitamínicos Adulto	Farmacia
+1127	Multivitamínicos y Capsulas Niños	Farmacia
+1128	Omega 3	Farmacia
+1129	Prenatal	Farmacia
+1131	Relajantes	Farmacia
+1133	Vitamina A y D	Farmacia
+1134	Vitamina C	Farmacia
+1135	Vitamina E	Farmacia
+1175	Suplemento alimenticio	Farmacia
+1137	Cremas y Tratamientos	Farmacia
+1138	Desodorante y Antitranspirante para pies	Farmacia
+1139	Fungicidas	Farmacia
+1140	Plantillas	Farmacia
+1142	Terapia respiratoria	Farmacia
+1143	Anthistaminicos	Farmacia
+1144	Corticoesteriodes	Farmacia
+1147	Antigripales	Farmacia
+1149	Descongestionantes	Farmacia
+1150	Pastillas y capsulas para la garganta	Farmacia
+1151	Jarabes y Expectorantes	Farmacia
+1153	Pastillas y capsulas niños	Farmacia
+1155	Tiroides	Farmacia
+1156	Hipertensión y diuréticos	Farmacia
+1157	Trigliceridos y colesterol	Farmacia
+1158	Ritmo cardíaco	Farmacia
+1277	Circulación y Varices	Farmacia
+1160	Tratamientos para Diabéticos	Farmacia
+1161	Glucometros	Farmacia
+1162	Suplemento para diabeticos	Farmacia
+1164	Lentes de lectura	Farmacia
+1165	Tratamientos	Farmacia
+1166	Gotas y lubricantes	Farmacia
+1168	Dolor de Cabeza y Migraña	Farmacia
+1169	Dolor Menstrual	Farmacia
+1170	Dolor Muscular y Articular	Farmacia
+1176	Niños	Farmacia
+1276	Anestésicos Locales	Farmacia
+1183	Antibióticos sistémicos	Farmacia
+1184	Antiinfecciosos	Farmacia
+1185	Antimicoticos	Farmacia
+1186	Antiparasitario	Farmacia
+
+# Frutas y Verduras
+704	Bananos, Papayas y tropicales	Frutas y Verduras
+705	Fresa, frambuesa y moras	Frutas y Verduras
+706	Manzanas y peras	Frutas y Verduras
+707	Naranja, Limón y cítricos	Frutas y Verduras
+708	Uvas, duraznos, y ciruelas	Frutas y Verduras
+751	Frutas de temporada y exóticas	Frutas y Verduras
+876	Manzanas	Frutas y Verduras
+877	Peras	Frutas y Verduras
+878	Bananos	Frutas y Verduras
+879	Papayas y tropicales	Frutas y Verduras
+880	Naranjas	Frutas y Verduras
+881	Limón y cítricos	Frutas y Verduras
+882	Uvas	Frutas y Verduras
+883	Duraznos y melocotones	Frutas y Verduras
+884	Ciruelas	Frutas y Verduras
+885	Fresas	Frutas y Verduras
+886	Frambuesas	Frutas y Verduras
+887	Moras	Frutas y Verduras
+984	Manzanas	Frutas y Verduras
+985	Peras	Frutas y Verduras
+986	Bananos	Frutas y Verduras
+987	Papayas y tropicales	Frutas y Verduras
+988	Naranjas	Frutas y Verduras
+989	Limón y cítricos	Frutas y Verduras
+990	Uvas	Frutas y Verduras
+991	Duraznos y melocotones	Frutas y Verduras
+992	Ciruelas	Frutas y Verduras
+993	Fresas	Frutas y Verduras
+994	Frambuesas	Frutas y Verduras
+995	Moras	Frutas y Verduras
+709	Verduras	Frutas y Verduras
+710	Cebollas, papas y verduras de raíz	Frutas y Verduras
+711	Chiles, ajos, y pimientos	Frutas y Verduras
+712	Ensaladas y empacados	Frutas y Verduras
+713	Hongos, brócolis y espárragos	Frutas y Verduras
+714	Lechugas, espinacas y hojas verdes	Frutas y Verduras
+715	Tomates, aguacates y básicos	Frutas y Verduras
+799	Calabazas y similares	Frutas y Verduras
+889	Aguacates	Frutas y Verduras
+890	Culantro-Cilantro	Frutas y Verduras
+891	Hierba Medicinal-Organico	Frutas y Verduras
+892	Perejil Fresco	Frutas y Verduras
+893	Cebollas	Frutas y Verduras
+894	Apio	Frutas y Verduras
+895	Cebollino	Frutas y Verduras
+896	Ajos	Frutas y Verduras
+897	Arvejas	Frutas y Verduras
+898	Elotes	Frutas y Verduras
+899	Vainicas enteras	Frutas y Verduras
+900	Vegetales Procesados Mix	Frutas y Verduras
+901	Ensalada Preparada Hidroponica	Frutas y Verduras
+902	Ensalada Preparada Organica	Frutas y Verduras
+903	Acelga	Frutas y Verduras
+904	Esparragos	Frutas y Verduras
+905	Espinacas	Frutas y Verduras
+906	Alcachofas	Frutas y Verduras
+907	Brocoli/Coliflor	Frutas y Verduras
+908	Ensaladas y empacados	Frutas y Verduras
+909	Lechuga	Frutas y Verduras
+910	Lechuga Hidroponica	Frutas y Verduras
+911	Repollo Verde/Morado	Frutas y Verduras
+912	Chiles	Frutas y Verduras
+913	Tomate Especialidad	Frutas y Verduras
+914	Tomate Rojo	Frutas y Verduras
+915	Hongos Frescos	Frutas y Verduras
+916	Minivegetales	Frutas y Verduras
+917	Papas Enteras	Frutas y Verduras
+918	Rabanos/Rabanitos	Frutas y Verduras
+919	Zanahoria	Frutas y Verduras
+920	Tuberculos	Frutas y Verduras
+921	Berenjena	Frutas y Verduras
+922	Chayotes	Frutas y Verduras
+923	Pepinos Enteros	Frutas y Verduras
+924	Zapallo Entero/Partido	Frutas y Verduras
+925	Zuchini Entero	Frutas y Verduras
+972	Calabazas y similares	Frutas y Verduras
+997	Aguacates	Frutas y Verduras
+998	Culantro-Cilantro	Frutas y Verduras
+999	Hierba Medicinal-Organico	Frutas y Verduras
+1000	Perejil Fresco	Frutas y Verduras
+1001	Cebollas	Frutas y Verduras
+1002	Apio	Frutas y Verduras
+1003	Cebollino	Frutas y Verduras
+1004	Ajos	Frutas y Verduras
+1005	Arvejas	Frutas y Verduras
+1006	Elotes	Frutas y Verduras
+1007	Vainicas enteras	Frutas y Verduras
+1008	Vegetales Procesados Mix	Frutas y Verduras
+1009	Ensalada Preparada Hidroponica	Frutas y Verduras
+1010	Ensalada Preparada Organica	Frutas y Verduras
+1011	Acelga	Frutas y Verduras
+1012	Esparragos	Frutas y Verduras
+1013	Espinacas	Frutas y Verduras
+1014	Alcachofas	Frutas y Verduras
+1015	Brocoli/Coliflor	Frutas y Verduras
+1016	Ensaladas y empacados	Frutas y Verduras
+1017	Lechuga	Frutas y Verduras
+1018	Lechuga Hidroponica	Frutas y Verduras
+1019	Repollo Verde/Morado	Frutas y Verduras
+1020	Chiles	Frutas y Verduras
+1021	Tomate Especialidad	Frutas y Verduras
+1022	Tomate Rojo	Frutas y Verduras
+1023	Hongos Frescos	Frutas y Verduras
+1024	Minivegetales	Frutas y Verduras
+1025	Papas Enteras	Frutas y Verduras
+1026	Rabanos/Rabanitos	Frutas y Verduras
+1027	Zanahoria	Frutas y Verduras
+1028	Tuberculos	Frutas y Verduras
+1029	Berenjena	Frutas y Verduras
+1030	Chayotes	Frutas y Verduras
+1031	Pepinos Enteros	Frutas y Verduras
+1032	Zapallo Entero/Partido	Frutas y Verduras
+1033	Zuchini Entero	Frutas y Verduras
+
+# Panadería y tortillería
+716	Barra de Ensaladas	Panadería y tortillería
+717	Barra de Postres	Panadería y tortillería
+718	Bebidas preparadas	Panadería y tortillería
+719	Fritos y Rostizados	Panadería y tortillería
+720	Guisados	Panadería y tortillería
+721	Platillos preparados	Panadería y tortillería
+722	Sandwiches Pizza y Hot Dog	Panadería y tortillería
+723	Sopas y Guarniciones	Panadería y tortillería
+724	Bizcochos	Panadería y tortillería
+725	Empacados	Panadería y tortillería
+556	Crutones	Panadería y tortillería
+726	Bagels	Panadería y tortillería
+727	Bocadillos y Empanadas	Panadería y tortillería
+728	Bollos y Hot Dog	Panadería y tortillería
+729	Empanizadores	Panadería y tortillería
+730	Pan de Caja	Panadería y tortillería
+731	Pan Europeo y Rústico	Panadería y tortillería
+732	Pan Tostado	Panadería y tortillería
+733	Pasteles y Pays	Panadería y tortillería
+734	Roscas y Panqués	Panadería y tortillería
+792	Roscas y Panqués	Panadería y tortillería
+735	Pan Pita	Panadería y tortillería
+736	Tortillas de Harina	Panadería y tortillería
+737	Tortillas de Maíz	Panadería y tortillería
+738	Tostadas	Panadería y tortillería
+
+# Mascota
+636	Accesorios para Perros	Mascota
+637	Alimento seco para Gatos	Mascota
+638	Alimento seco para Perros	Mascota
+639	Alimento y accesorios otras Mascotas	Mascota
+640	Arena y Accesorios para Gatos	Mascota
+643	Limpieza y Cuidado	Mascota
+644	Premios y Carnazas	Mascota
+797	Alimento Húmedo para Perros	Mascota
+21645	Alimento Humedo para Perros	Mascota
+21646	Alimento Húmedo para Gatos	Mascota
