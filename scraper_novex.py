@@ -1315,6 +1315,16 @@ async def extraer_productos(page, cat_nombre, vistos):
                     href = limpiar_texto(href)
                 except Exception:
                     pass
+
+                imagen = ""
+                try:
+                    imagen = await contenedor.evaluate(
+                        "el => { const img = el.querySelector('img'); return img ? (img.src || img.dataset.src || '') : ''; }"
+                    )
+                    imagen = limpiar_texto(imagen)
+                except Exception:
+                    pass
+
                 clave = href if href else nombre.lower()
                 if clave in vistos:
                     continue
@@ -1325,6 +1335,7 @@ async def extraer_productos(page, cat_nombre, vistos):
                     "moneda":    "CRC",
                     "categoria": cat_nombre,
                     "url":       href,
+                    "imagen":    imagen,
                 })
             except Exception:
                 continue
@@ -1425,8 +1436,8 @@ def exportar_excel(productos):
     ra = Alignment(horizontal="right", vertical="center")
     thin = Side(border_style="thin", color="E2E8F0")
     brd  = Border(left=thin, right=thin, top=thin, bottom=thin)
-    cols   = ["Nombre del producto", "Precio", "Moneda", "Categoria", "URL"]
-    widths = [55, 14, 9, 25, 60]
+    cols   = ["Nombre del producto", "Precio", "Moneda", "Categoria", "URL", "Imagen URL"]
+    widths = [55, 14, 9, 25, 60, 60]
     for ci, (c, w) in enumerate(zip(cols, widths), 1):
         cell = ws.cell(row=1, column=ci, value=c)
         cell.font = hf; cell.fill = hx
@@ -1438,7 +1449,8 @@ def exportar_excel(productos):
         fila = i + 1
         fill = ax if i % 2 == 0 else gx
         vals = [prod.get("nombre",""), prod.get("precio"),
-                prod.get("moneda","CRC"), prod.get("categoria",""), prod.get("url","")]
+                prod.get("moneda","CRC"), prod.get("categoria",""), prod.get("url",""),
+                prod.get("imagen","")]
         for ci, v in enumerate(vals, 1):
             if isinstance(v, str):
                 v = limpiar_texto(v)
@@ -1474,6 +1486,17 @@ def exportar_excel(productos):
     return nombre_f
 
 
+def exportar_json(productos):
+    import json
+    fecha    = datetime.now().strftime("%Y%m%d_%H%M")
+    nombre_f = f"productos_Novex_{fecha}.json"
+    data = [{"negocio": "Novex", **p} for p in productos]
+    with open(nombre_f, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"  JSON: {nombre_f}")
+    return nombre_f
+
+
 async def main():
     print(f"\nUbiqoCR Scraper - Novex Final")
     print(f"Inicio: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
@@ -1481,6 +1504,7 @@ async def main():
     prods = await scrapear()
     if prods:
         exportar_excel(prods)
+        exportar_json(prods)
     else:
         print("Sin productos")
     print(f"\nFin: {datetime.now().strftime('%H:%M:%S')}\n")

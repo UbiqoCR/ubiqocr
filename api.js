@@ -22,7 +22,7 @@ const USANDO_API = API_URL !== null;
 // Agregá aquí cada JSON nuevo que subas a /data/
 const DATA_FILES = [
   { file: "/data/epa.json",   negocio: "EPA" },
-  // { file: "/data/novex.json",   negocio: "Novex" },
+  { file: "/data/novex.json",   negocio: "Novex" },
   // { file: "/data/lagar.json",   negocio: "El Lagar" },
   // { file: "/data/masxmenos.json", negocio: "MasxMenos" },
 ];
