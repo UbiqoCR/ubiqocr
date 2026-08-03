@@ -21,10 +21,11 @@ const USANDO_API = API_URL !== null;
 // ── Archivos JSON estáticos disponibles ─────────────────────
 // Agregá aquí cada JSON nuevo que subas a /data/
 const DATA_FILES = [
-  { file: "/data/epa.json",   negocio: "EPA" },
-  { file: "/data/novex.json",   negocio: "Novex" },
-  // { file: "/data/lagar.json",   negocio: "El Lagar" },
+  { file: "/data/epa.json",       negocio: "EPA" },
+  { file: "/data/novex.json",     negocio: "Novex" },
+  // { file: "/data/lagar.json",  negocio: "El Lagar" },
   { file: "/data/masxmenos.json", negocio: "MasxMenos" },
+  { file: "/data/prueba.json",    negocio: "Prueba Comparacion" },
 ];
 
 // ── Cache de productos estáticos ────────────────────────────
@@ -33,10 +34,7 @@ let _cacheLoading   = false;
 let _cacheCallbacks = [];
 
 async function cargarProductosEstaticos() {
-  // Si ya están en cache, retornar inmediatamente
   if (_productosCache !== null) return _productosCache;
-
-  // Si ya se está cargando, esperar
   if (_cacheLoading) {
     return new Promise(resolve => _cacheCallbacks.push(resolve));
   }
@@ -103,25 +101,24 @@ async function buscarEnEstaticos(query, filtros = {}) {
     resultados.sort((a, b) => norm(b.nombre).localeCompare(norm(a.nombre)));
   }
 
-  // Convertir al formato que espera el index.html
-  // Agrupamos por negocio para mostrar como "tarjetas de tienda"
+  // Agrupar por negocio
   const porNegocio = {};
   resultados.forEach(p => {
     const key = p.negocio || "Sin tienda";
     if (!porNegocio[key]) {
       porNegocio[key] = {
-        id:       key,
-        nombre:   key,
-        tipo:     "Tienda",
-        ubicacion:{ provincia: "", canton: "", distrito: "" },
-        horario:  "",
-        telefono: "",
-        whatsapp: "",
-        maps:     "",
+        id:         key,
+        nombre:     key,
+        tipo:       "Tienda",
+        ubicacion:  { provincia: "", canton: "", distrito: "" },
+        horario:    "",
+        telefono:   "",
+        whatsapp:   "",
+        maps:       "",
         es_premium: false,
-        _score:   5,
-        productos: [],
-        _raw:     [],  // productos con imagen y URL
+        _score:     5,
+        productos:  [],
+        _raw:       [],
       };
     }
     porNegocio[key]._raw.push(p);
@@ -172,17 +169,17 @@ async function buscarProductosAPI(query, filtros = {}) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       return data.resultados.map(r => ({
-        id:        r.negocio_id,
-        nombre:    r.negocio_nombre,
-        tipo:      r.tipo,
-        ubicacion: { provincia: r.provincia, canton: r.canton, distrito: r.distrito },
-        horario:   r.horario,
-        telefono:  r.telefono,
-        whatsapp:  r.whatsapp,
-        maps:      r.maps_url,
-        es_premium:r.es_premium,
-        _score:    r.score,
-        productos: r.productos.map(p => ({
+        id:         r.negocio_id,
+        nombre:     r.negocio_nombre,
+        tipo:       r.tipo,
+        ubicacion:  { provincia: r.provincia, canton: r.canton, distrito: r.distrito },
+        horario:    r.horario,
+        telefono:   r.telefono,
+        whatsapp:   r.whatsapp,
+        maps:       r.maps_url,
+        es_premium: r.es_premium,
+        _score:     r.score,
+        productos:  r.productos.map(p => ({
           producto: p.nombre,
           precio:   parseFloat(p.precio),
           moneda:   p.moneda,
@@ -203,7 +200,7 @@ async function buscarProductosAPI(query, filtros = {}) {
   return null;
 }
 
-// ── Helpers (sin cambios) ────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────
 async function obtenerProvinciasAPI() {
   if (!USANDO_API) return null;
   try {
