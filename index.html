@@ -641,7 +641,17 @@
         const precioMenor = ordenados[0].precio;
         const precioMayor = ordenados[ordenados.length - 1].precio;
         const ahorro = precioMayor - precioMenor;
-        const mostrar = ordenados.slice(0, 8);
+        // Tomar máximo 2 productos por tienda para mostrar variedad
+        const porTienda = {};
+        const mostrar = [];
+        for (const p of ordenados) {
+          if (!porTienda[p.tienda]) porTienda[p.tienda] = 0;
+          if (porTienda[p.tienda] < 2) {
+            mostrar.push(p);
+            porTienda[p.tienda]++;
+          }
+          if (mostrar.length >= 8) break;
+        }
 
         const panel = document.createElement("div");
         panel.id = "ubiqo-compare";
