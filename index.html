@@ -601,16 +601,99 @@
         tag.addEventListener("click", () => { el("q").value = tag.dataset.word; runSearch(tag.dataset.word); });
       });
     }
-
     // ── Render resultados ────────────────────────────────
     function renderResults(list, tokens=[]){
       const results=el("results"), empty=el("empty");
       el("count").textContent = String(list.length);
       results.innerHTML = "";
 
+      // Quitar panel de comparación anterior
+      document.getElementById("ubiqo-compare")?.remove();
+
       if (!list.length){ empty.style.display="block"; return; }
       empty.style.display = "none";
 
+      // ── Panel de comparación ──────────────────────────
+      // Recolectar todos los productos con precio de todos los resultados
+      const todosProds = [];
+      list.forEach(item => {
+        (item.matches||item.productos||[]).forEach(p => {
+          if (p.precio != null && p.precio > 0) {
+            todosProds.push({
+              tienda:  item.nombre,
+              nombre:  p.producto || "",
+              precio:  p.precio,
+              moneda:  p.moneda || "CRC",
+              imagen:  p.imagen || "",
+              url:     p.url    || "",
+            });
+          }
+        });
+      });
+
+      if (todosProds.length >= 2) {
+        // Ordenar por precio menor a mayor por defecto
+        const orden = el("sortBy")?.value || "price_asc";
+        const ordenados = [...todosProds].sort((a, b) =>
+          orden === "price_desc" ? b.precio - a.precio : a.precio - b.precio
+        );
+
+        const precioMenor = ordenados[0].precio;
+        const precioMayor = ordenados[ordenados.length - 1].precio;
+        const ahorro = precioMayor - precioMenor;
+        const mostrar = ordenados.slice(0, 8);
+
+        const panel = document.createElement("div");
+        panel.id = "ubiqo-compare";
+        panel.className = "compare-panel";
+        panel.innerHTML = `
+          <div class="compare-header">
+            <div class="compare-header-left">
+              <span class="compare-icon">⚖️</span>
+              <div>
+                <div class="compare-title">Comparación de precios</div>
+                <div class="compare-sub">
+                  ${todosProds.length} productos de ${list.length} tienda${list.length !== 1 ? "s" : ""}
+                  ${ahorro > 0 ? ` · Ahorrás hasta <strong>₡${ahorro.toLocaleString("es-CR")}</strong>` : ""}
+                </div>
+              </div>
+            </div>
+            <button class="compare-toggle" id="compareToggle">Ocultar ▲</button>
+          </div>
+          <div class="compare-body" id="compareBody">
+            <div class="compare-grid">
+              ${mostrar.map((p, i) => `
+                <div class="compare-card ${i === 0 && orden !== "price_desc" ? "compare-card--best" : ""}">
+                  ${i === 0 && orden !== "price_desc" ? '<div class="compare-badge">Mejor precio</div>' : ""}
+                  ${p.imagen
+                    ? `<img src="${p.imagen}" alt="${p.nombre}" class="compare-img" loading="lazy" onerror="this.style.display='none'">`
+                    : '<div class="compare-img-placeholder">🖼️</div>'}
+                  <div class="compare-store">${p.tienda}</div>
+                  <div class="compare-name">${p.nombre}</div>
+                  <div class="compare-price">₡${p.precio.toLocaleString("es-CR")}</div>
+                  ${i === 0 && ahorro > 0 && orden !== "price_desc"
+                    ? `<div class="compare-save">−₡${ahorro.toLocaleString("es-CR")} vs más caro</div>`
+                    : ""}
+                  ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener" class="compare-link">Ver →</a>` : ""}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+
+        // Insertar ANTES de los resultados
+        results.parentElement.insertBefore(panel, results);
+
+        // Toggle ocultar/mostrar
+        document.getElementById("compareToggle")?.addEventListener("click", function() {
+          const body = document.getElementById("compareBody");
+          const oculto = body.style.display === "none";
+          body.style.display = oculto ? "" : "none";
+          this.textContent = oculto ? "Ocultar ▲" : "Ver comparación ▼";
+        });
+      }
+
+      // ── Cards normales de resultados ──────────────────
       const showRelevance = tokens.length > 0;
 
       for (const item of list){
@@ -645,10 +728,10 @@
             : "";
           return `<div class="line${!isMatch?" no-match":""}" style="${imgHtml?"display:flex;align-items:center;gap:.5rem;":""}">
             ${imgHtml}
-          <span class="prod-name" style="flex:1;">${nombre}</span>
-          <span class="prod-price">${sym}&nbsp;${price}</span>
-          ${linkHtml}
-        </div>`;
+            <span class="prod-name" style="flex:1;">${nombre}</span>
+            <span class="prod-price">${sym}&nbsp;${price}</span>
+            ${linkHtml}
+          </div>`;
         }).join("");
 
         // Acciones
@@ -684,7 +767,6 @@
         results.appendChild(card);
       }
     }
-
     // ── Búsqueda ─────────────────────────────────────────
     async function runSearch(query){
       const raw = (query !== undefined ? query : el("q").value).trim();
