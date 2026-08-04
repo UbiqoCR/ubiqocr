@@ -27,6 +27,7 @@ const DATA_FILES = [
   { file: "/data/masxmenos.json", negocio: "MasxMenos" },
   { file: "/data/prueba.json",    negocio: "Prueba Comparacion" },
   { file: "/data/walmart.json", negocio: "WalmartCR" },
+  { file: "/data/maxipali.json", negocio: "MaxiPali" },
 ];
 
 // ── Cache de productos estáticos ────────────────────────────
