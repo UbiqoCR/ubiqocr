@@ -151,15 +151,9 @@ function togglePanelCarrito() {
 }
 
 function abrirPanelCarrito() {
-  var overlay = document.createElement('div');
-  overlay.id = 'carritoOverlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;';
-  overlay.onclick = function() { togglePanelCarrito(); };
-  document.body.appendChild(overlay);
-
   var panel = document.createElement('div');
   panel.id = 'panelCarrito';
-  panel.style.cssText = 'position:fixed;top:0;right:0;width:min(680px,100vw);height:100vh;background:#fff;z-index:1000;display:flex;flex-direction:column;font-family:inherit;overflow:hidden;box-shadow:-8px 0 40px rgba(0,0,0,.18);';
+  panel.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;background:#fff;z-index:1000;display:flex;flex-direction:column;font-family:inherit;overflow:hidden;';
 
   var headerHtml = '<div style="padding:1.25rem 1.75rem;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
     + '<div style="display:flex;align-items:center;gap:.75rem;"><span style="font-size:1.4rem;">🛒</span><div><div style="font-weight:700;font-size:1.05rem;color:#0f172a;">Mi lista de compras</div><div style="font-size:.78rem;color:#64748b;">Hola, ' + _usuario.nombre + ' 👋</div></div></div>'
