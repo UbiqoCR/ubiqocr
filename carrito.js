@@ -4,7 +4,7 @@
  */
 
 const SUPABASE_URL = 'https://yaokclqtckltkdshkquh.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_bg2bwBOXZsnQIoeKmkFW-Q_57vf5fw3';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlhb2tjbHF0Y2tsdGtkc2hrcXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5Njk5NzQsImV4cCI6MjEwMTU0NTk3NH0.hwKTobj9SItnOXsjb-3wDR_oU2EZw3ZgUsOoIOxkmMc';
 
 // ── Cliente Supabase liviano ─────────────────────────────────
 const sb = {
