@@ -333,6 +333,14 @@ function renderPanelCarrito() {
       <span>Total (${_items.length} productos)</span>
       <span style="color:#1d4ed8;">₡${totalGeneral.toLocaleString('es-CR')}</span>
     </div>
+    ${tiendas.length > 1 ? `
+    <button onclick="toggleDesglose()" id="btnDesglose" style="
+      margin-top:.75rem;width:100%;padding:.6rem;
+      background:#eff6ff;color:#2563eb;border:1px solid rgba(37,99,235,.2);
+      border-radius:8px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;
+    ">📊 Comparar precios por producto</button>
+    <div id="panelDesglose" style="display:none;margin-top:.75rem;"></div>
+    ` : ''}
     <button onclick="vaciarCarrito()" style="
       margin-top:.75rem;width:100%;padding:.5rem;
       background:none;border:1px solid #e2e8f0;border-radius:8px;
@@ -585,6 +593,64 @@ function mostrarToast(msg) {
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
+}
+
+
+// ── Desglose por producto ────────────────────────────────────
+function toggleDesglose() {
+  const panel = document.getElementById('panelDesglose');
+  const btn   = document.getElementById('btnDesglose');
+  if (!panel) return;
+  const visible = panel.style.display !== 'none';
+  panel.style.display = visible ? 'none' : '';
+  btn.textContent = visible ? '📊 Comparar precios por producto' : '▲ Ocultar comparación';
+  if (!visible) renderDesglose(panel);
+}
+
+function renderDesglose(panel) {
+  // Agrupar items por nombre de producto normalizado
+  const porProducto = {};
+  _items.forEach(item => {
+    const key = item.nombre_producto.toLowerCase().trim();
+    if (!porProducto[key]) {
+      porProducto[key] = { nombre: item.nombre_producto, tiendas: [] };
+    }
+    if (item.precio) {
+      porProducto[key].tiendas.push({
+        tienda: item.tienda || 'Sin tienda',
+        precio: parseFloat(item.precio)
+      });
+    }
+  });
+
+  const prods = Object.values(porProducto).filter(p => p.tiendas.length > 0);
+
+  if (!prods.length) {
+    panel.innerHTML = '<div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:.5rem;">Agregá el mismo producto de distintas tiendas para comparar.</div>';
+    return;
+  }
+
+  panel.innerHTML = `
+    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-bottom:.5rem;">Comparación por producto</div>
+    ${prods.map(p => {
+      const ordenadas = [...p.tiendas].sort((a, b) => a.precio - b.precio);
+      const ahorro = ordenadas.length > 1
+        ? ordenadas[ordenadas.length-1].precio - ordenadas[0].precio
+        : 0;
+      return \`
+        <div style="margin-bottom:.875rem;padding:.75rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+          <div style="font-size:.8rem;font-weight:600;color:#0f172a;margin-bottom:.5rem;">\${p.nombre}</div>
+          \${ordenadas.map((t, i) => \`
+            <div style="display:flex;justify-content:space-between;padding:.25rem 0;font-size:.78rem;\${i===0?'color:#16a34a;font-weight:700;':'color:#64748b;'}">
+              <span>\${i===0?'⭐ ':''}\${t.tienda}</span>
+              <span>₡\${t.precio.toLocaleString('es-CR')}</span>
+            </div>
+          \`).join('')}
+          \${ahorro > 0 ? \`<div style="font-size:.7rem;color:#16a34a;margin-top:.25rem;">Ahorrás ₡\${ahorro.toLocaleString('es-CR')} eligiendo \${ordenadas[0].tienda}</div>\` : ''}
+        </div>
+      \`;
+    }).join('')}
+  `;
 }
 
 // ── Agregar botón "Añadir a lista" en resultados ─────────────
