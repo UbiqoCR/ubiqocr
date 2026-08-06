@@ -151,18 +151,42 @@ function togglePanelCarrito() {
 }
 
 function abrirPanelCarrito() {
+  var overlay = document.createElement('div');
+  overlay.id = 'carritoOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;';
+  overlay.onclick = function() { togglePanelCarrito(); };
+  document.body.appendChild(overlay);
+
   var panel = document.createElement('div');
   panel.id = 'panelCarrito';
-  panel.style.cssText = 'position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:#fff;border-left:1px solid #e2e8f0;box-shadow:-4px 0 24px rgba(0,0,0,.12);z-index:1000;display:flex;flex-direction:column;font-family:\'DM Sans\',system-ui,sans-serif;overflow:hidden;';
-  panel.innerHTML = '<div style="padding:1.25rem 1.5rem;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;"><div><div style="font-weight:700;font-size:1rem;color:#0f172a;">🛒 Mi lista</div><div style="font-size:.75rem;color:#64748b;margin-top:.1rem;">Hola, ' + _usuario.nombre + '</div></div><button onclick="togglePanelCarrito()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:#94a3b8;padding:.25rem;">✕</button></div>'
-    + '<div style="padding:1rem 1.5rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;"><div style="font-size:.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem;">Agregar producto</div><div style="display:flex;gap:.5rem;"><input id="carritoSearch" type="search" placeholder="Buscar producto..." style="flex:1;padding:.5rem .75rem;border:1.5px solid #e2e8f0;border-radius:8px;font:inherit;font-size:.85rem;outline:none;" oninput="buscarParaCarrito(this.value)"></div><div id="carritoResultados" style="margin-top:.5rem;max-height:180px;overflow-y:auto;"></div><details style="margin-top:.75rem;"><summary style="font-size:.75rem;color:#2563eb;cursor:pointer;font-weight:500;">+ Agregar manualmente</summary><div style="margin-top:.5rem;display:grid;gap:.4rem;"><input id="manualNombre" placeholder="Nombre del producto" style="padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;"><div style="display:flex;gap:.4rem;"><input id="manualPrecio" type="number" placeholder="Precio ₡" style="flex:1;padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;"><input id="manualTienda" placeholder="Tienda" style="flex:1;padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;"></div><button onclick="agregarManual()" style="padding:.45rem;background:#2563eb;color:#fff;border:none;border-radius:6px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;">Agregar</button></div></details></div>'
-    + '<div id="carritoItems" style="flex:1;overflow-y:auto;padding:1rem 1.5rem;"></div>'
-    + '<div id="carritoFooter" style="border-top:1px solid #e2e8f0;padding:1rem 1.5rem;background:#f8fafc;"></div>';
+  panel.style.cssText = 'position:fixed;top:0;right:0;width:min(680px,100vw);height:100vh;background:#fff;z-index:1000;display:flex;flex-direction:column;font-family:inherit;overflow:hidden;box-shadow:-8px 0 40px rgba(0,0,0,.18);';
+
+  var headerHtml = '<div style="padding:1.25rem 1.75rem;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+    + '<div style="display:flex;align-items:center;gap:.75rem;"><span style="font-size:1.4rem;">🛒</span><div><div style="font-weight:700;font-size:1.05rem;color:#0f172a;">Mi lista de compras</div><div style="font-size:.78rem;color:#64748b;">Hola, ' + _usuario.nombre + ' 👋</div></div></div>'
+    + '<button onclick="togglePanelCarrito()" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;font-size:.875rem;color:#64748b;padding:.4rem .875rem;font-family:inherit;font-weight:500;">✕ Cerrar</button>'
+    + '</div>';
+
+  var buscadorHtml = '<div style="padding:1rem 1.75rem;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-shrink:0;">'
+    + '<div style="font-size:.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem;">Agregar producto</div>'
+    + '<input id="carritoSearch" type="search" placeholder="Buscá un producto..." style="width:100%;padding:.6rem .875rem;border:1.5px solid #e2e8f0;border-radius:8px;font:inherit;font-size:.9rem;outline:none;background:#fff;" oninput="buscarParaCarrito(this.value)">'
+    + '<div id="carritoResultados" style="margin-top:.5rem;max-height:200px;overflow-y:auto;border-radius:8px;"></div>'
+    + '<details style="margin-top:.625rem;"><summary style="font-size:.78rem;color:#2563eb;cursor:pointer;font-weight:600;">+ Agregar manualmente</summary>'
+    + '<div style="margin-top:.5rem;display:grid;gap:.4rem;">'
+    + '<input id="manualNombre" placeholder="Nombre del producto" style="padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;">'
+    + '<div style="display:flex;gap:.4rem;">'
+    + '<input id="manualPrecio" type="number" placeholder="Precio ₡" style="flex:1;padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;">'
+    + '<input id="manualTienda" placeholder="Tienda" style="flex:1;padding:.45rem .6rem;border:1px solid #e2e8f0;border-radius:6px;font:inherit;font-size:.82rem;outline:none;">'
+    + '</div>'
+    + '<button onclick="agregarManual()" style="padding:.5rem;background:#2563eb;color:#fff;border:none;border-radius:6px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;">Agregar</button>'
+    + '</div></details>'
+    + '</div>';
+
+  panel.innerHTML = headerHtml + buscadorHtml
+    + '<div id="carritoItems" style="flex:1;overflow-y:auto;padding:1.25rem 1.75rem;"></div>'
+    + '<div id="carritoFooter" style="border-top:2px solid #e2e8f0;overflow-y:auto;flex-shrink:0;max-height:50vh;padding:1.25rem 1.75rem;background:#f8fafc;"></div>';
+
   document.body.appendChild(panel);
   renderPanelCarrito();
-  setTimeout(function() {
-    document.addEventListener('click', cerrarPanelSiAfuera);
-  }, 100);
 }
 
 function cerrarPanelSiAfuera(e) {
