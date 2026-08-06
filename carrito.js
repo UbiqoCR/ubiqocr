@@ -230,7 +230,7 @@ function renderPanelCarrito() {
     return '<div style="display:flex;justify-content:space-between;padding:.3rem 0;' + (i===0?'color:#16a34a;font-weight:700;':'color:#64748b;') + 'font-size:.82rem;"><span>' + (i===0?'⭐ ':'') + entry[0] + '</span><span>₡' + entry[1].toLocaleString('es-CR') + '</span></div>';
   }).join('');
 
-  var tiendasUnicas = Object.keys(porTienda).length; var desgloseBtn = tiendasUnicas > 1
+  var tiendasUnicas = Object.keys(porTienda).length; var desgloseBtn = _items.length > 0
     ? '<button onclick="toggleDesglose()" id="btnDesglose" style="margin-top:.75rem;width:100%;padding:.6rem;background:#eff6ff;color:#2563eb;border:1px solid rgba(37,99,235,.2);border-radius:8px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;">📊 Comparar precios por producto</button><div id="panelDesglose" style="display:none;margin-top:.75rem;"></div>'
     : '';
 
@@ -248,7 +248,7 @@ function toggleDesglose() {
   var visible = panel.style.display !== 'none';
   panel.style.display = visible ? 'none' : '';
   btn.textContent = visible ? '📊 Comparar precios por producto' : '▲ Ocultar comparación';
-  if (!visible) renderDesglose(panel);
+  if (!visible) renderDesglose(panel).catch(function(){});
 }
 
 function normalizarNombre(nombre) {
