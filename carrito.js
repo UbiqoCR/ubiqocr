@@ -214,7 +214,7 @@ function renderPanelCarrito() {
     return '<div style="display:flex;justify-content:space-between;padding:.3rem 0;' + (i===0?'color:#16a34a;font-weight:700;':'color:#64748b;') + 'font-size:.82rem;"><span>' + (i===0?'⭐ ':'') + entry[0] + '</span><span>₡' + entry[1].toLocaleString('es-CR') + '</span></div>';
   }).join('');
 
-  var desgloseBtn = tiendas.length > 1
+  var tiendasUnicas = Object.keys(porTienda).length; var desgloseBtn = tiendasUnicas > 1
     ? '<button onclick="toggleDesglose()" id="btnDesglose" style="margin-top:.75rem;width:100%;padding:.6rem;background:#eff6ff;color:#2563eb;border:1px solid rgba(37,99,235,.2);border-radius:8px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;">📊 Comparar precios por producto</button><div id="panelDesglose" style="display:none;margin-top:.75rem;"></div>'
     : '';
 
@@ -235,40 +235,75 @@ function toggleDesglose() {
   if (!visible) renderDesglose(panel);
 }
 
+function normalizarNombre(nombre) {
+  return nombre.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function similitud(a, b) {
+  var wa = normalizarNombre(a).split(' ').filter(function(w) { return w.length > 2; });
+  var wb = normalizarNombre(b).split(' ').filter(function(w) { return w.length > 2; });
+  if (!wa.length || !wb.length) return 0;
+  var coinciden = wa.filter(function(w) { return wb.indexOf(w) !== -1; }).length;
+  return coinciden / Math.max(wa.length, wb.length);
+}
+
 function renderDesglose(panel) {
-  var porProducto = {};
+  // Agrupar por similitud de nombre (fuzzy matching)
+  var grupos = [];
+
   _items.forEach(function(item) {
-    var key = item.nombre_producto.toLowerCase().trim();
-    if (!porProducto[key]) porProducto[key] = { nombre: item.nombre_producto, tiendas: [] };
-    if (item.precio) {
-      porProducto[key].tiendas.push({ tienda: item.tienda || 'Sin tienda', precio: parseFloat(item.precio) });
+    if (!item.precio) return;
+    var encontrado = false;
+    for (var g = 0; g < grupos.length; g++) {
+      if (similitud(item.nombre_producto, grupos[g].nombre) >= 0.45) {
+        grupos[g].tiendas.push({ tienda: item.tienda || 'Sin tienda', precio: parseFloat(item.precio), nombre: item.nombre_producto });
+        encontrado = true;
+        break;
+      }
+    }
+    if (!encontrado) {
+      grupos.push({ nombre: item.nombre_producto, tiendas: [{ tienda: item.tienda || 'Sin tienda', precio: parseFloat(item.precio), nombre: item.nombre_producto }] });
     }
   });
 
-  var prods = Object.values(porProducto).filter(function(p) { return p.tiendas.length > 0; });
+  // Solo mostrar grupos con productos de DISTINTAS tiendas
+  var comparables = grupos.filter(function(g) {
+    var tiendas = g.tiendas.map(function(t) { return t.tienda; });
+    var unicas = tiendas.filter(function(t, i) { return tiendas.indexOf(t) === i; });
+    return unicas.length > 1;
+  });
 
-  if (!prods.length) {
-    panel.innerHTML = '<div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:.5rem;">Agregá el mismo producto de distintas tiendas para comparar.</div>';
+  if (!comparables.length) {
+    panel.innerHTML = '<div style="font-size:.78rem;color:#94a3b8;text-align:center;padding:.75rem;">Agregá el mismo producto de distintas tiendas para comparar precios.</div>';
     return;
   }
 
-  var html = '<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-bottom:.5rem;">Comparación por producto</div>';
+  var html = '<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#64748b;margin-bottom:.75rem;">'
+    + comparables.length + ' producto' + (comparables.length !== 1 ? 's' : '') + ' con comparación disponible</div>';
 
-  prods.forEach(function(p) {
-    var ordenadas = p.tiendas.slice().sort(function(a, b) { return a.precio - b.precio; });
-    var ahorro = ordenadas.length > 1 ? ordenadas[ordenadas.length-1].precio - ordenadas[0].precio : 0;
+  comparables.forEach(function(g) {
+    // Ordenar por precio
+    var ordenadas = g.tiendas.slice().sort(function(a, b) { return a.precio - b.precio; });
+    var ahorro = ordenadas[ordenadas.length-1].precio - ordenadas[0].precio;
 
     html += '<div style="margin-bottom:.875rem;padding:.75rem;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">';
-    html += '<div style="font-size:.8rem;font-weight:600;color:#0f172a;margin-bottom:.5rem;">' + p.nombre + '</div>';
+    html += '<div style="font-size:.8rem;font-weight:600;color:#0f172a;margin-bottom:.5rem;">' + g.nombre + '</div>';
     ordenadas.forEach(function(t, i) {
-      html += '<div style="display:flex;justify-content:space-between;padding:.25rem 0;font-size:.78rem;' + (i===0?'color:#16a34a;font-weight:700;':'color:#64748b;') + '"><span>' + (i===0?'⭐ ':'') + t.tienda + '</span><span>₡' + t.precio.toLocaleString('es-CR') + '</span></div>';
+      html += '<div style="display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px dashed #e2e8f0;font-size:.78rem;' + (i===0?'color:#16a34a;font-weight:700;':'color:#64748b;') + '">'
+        + '<span>' + (i===0?'⭐ ':'') + t.tienda + '</span>'
+        + '<span>₡' + t.precio.toLocaleString('es-CR') + '</span>'
+        + '</div>';
     });
     if (ahorro > 0) {
-      html += '<div style="font-size:.7rem;color:#16a34a;margin-top:.25rem;">Ahorrás ₡' + ahorro.toLocaleString('es-CR') + ' eligiendo ' + ordenadas[0].tienda + '</div>';
+      html += '<div style="font-size:.7rem;color:#16a34a;margin-top:.5rem;font-weight:600;">Ahorrás ₡' + ahorro.toLocaleString('es-CR') + ' comprando en ' + ordenadas[0].tienda + '</div>';
     }
     html += '</div>';
   });
 
+  panel.style.cssText += 'max-height:320px;overflow-y:auto;';
   panel.innerHTML = html;
 }
 
