@@ -303,7 +303,7 @@ function renderDesglose(panel) {
     html += '</div>';
   });
 
-  panel.style.cssText += 'max-height:320px;overflow-y:auto;';
+  panel.style.cssText = 'display:block;margin-top:.75rem;max-height:300px;overflow-y:auto;-webkit-overflow-scrolling:touch;';
   panel.innerHTML = html;
 }
 
