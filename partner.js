@@ -68,7 +68,7 @@ function agregarBotonPartner() {
 function actualizarBotonPartner() {
   var btn = document.getElementById('btnPartner');
   if (!btn || !_partner) return;
-  btn.innerHTML = '🏪 ' + _partner.nombre_negocio.split(' ')[0];
+  btn.innerHTML = '' + _partner.nombre_negocio.split(' ')[0];
 }
 
 // ── Portal principal ──────────────────────────────────────────
