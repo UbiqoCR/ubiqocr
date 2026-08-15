@@ -110,7 +110,7 @@ function crearPanelAuth() {
   return '<div style="background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:2.5rem;position:relative;">'
     + '<button onclick="cerrarPortalPartner()" style="position:absolute;top:1.25rem;right:1.25rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;padding:.35rem .7rem;font-size:.82rem;color:#64748b;">✕ Cerrar</button>'
     + '<div style="text-align:center;margin-bottom:2rem;">'
-    + '<div style="font-size:2.5rem;margin-bottom:.75rem;">🏪</div>'
+    + '<div style="font-size:2.5rem;margin-bottom:.75rem;"></div>'
     + '<h2 style="font-size:1.25rem;font-weight:700;color:#0f172a;margin-bottom:.4rem;">Portal de Partners</h2>'
     + '<p style="font-size:.85rem;color:#64748b;line-height:1.6;">Registrá tu negocio en UbiqoCR y llegá a miles de consumidores que buscan tus productos.</p>'
     + '</div>'
@@ -167,7 +167,7 @@ function campoPartnerSelect(id, label, opciones) {
 function crearPanelPendiente() {
   return '<div style="background:#fff;border-radius:20px;width:100%;max-width:440px;padding:2.5rem;text-align:center;position:relative;">'
     + '<button onclick="cerrarPortalPartner()" style="position:absolute;top:1.25rem;right:1.25rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;padding:.35rem .7rem;font-size:.82rem;color:#64748b;">✕</button>'
-    + '<div style="font-size:3rem;margin-bottom:1rem;">⏳</div>'
+    + '<div style="font-size:3rem;margin-bottom:1rem;"></div>'
     + '<h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:.5rem;">Solicitud en revisión</h2>'
     + '<p style="font-size:.875rem;color:#64748b;line-height:1.7;margin-bottom:1.5rem;">Tu negocio <strong>' + _partner.nombre_negocio + '</strong> está siendo revisado por nuestro equipo. Te contactaremos a <strong>' + _partner.correo + '</strong> en menos de 48 horas.</p>'
     + '<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:1rem;font-size:.82rem;color:#92400e;">⭐ Mientras esperás, podés explorar ubiqocr.com y ver cómo aparecerán tus productos una vez aprobado.</div>'
@@ -300,7 +300,7 @@ function cerrarSesionPartner() {
   _partner = null;
   localStorage.removeItem('ubiqo_partner_id');
   var btn = document.getElementById('btnPartner');
-  if (btn) btn.innerHTML = '🏪 Partners';
+  if (btn) btn.innerHTML = 'Partners';
   cerrarPortalPartner();
 }
 
@@ -398,7 +398,7 @@ async function subirProductosPartner() {
   if (!_partner || !_partnerProductos.length) return;
   var errEl = document.getElementById('pSubirError');
   var btn = document.querySelector('#portalPartner button[onclick="subirProductosPartner()"]');
-  if (btn) { btn.textContent = '⏳ Subiendo...'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Subiendo...'; btn.disabled = true; }
 
   try {
     var todos = [];
@@ -435,10 +435,10 @@ async function subirProductosPartner() {
     }
 
     cerrarPortalPartner();
-    mostrarToastPartner('✅ ' + _partnerProductos.length + ' productos enviados para revisión');
+    mostrarToastPartner(_partnerProductos.length + ' productos enviados para revisión');
   } catch(e) {
     if (errEl) { errEl.style.display = ''; errEl.textContent = 'Error al subir: ' + e.message; }
-    if (btn) { btn.textContent = '📤 Publicar productos en UbiqoCR'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'Publicar productos en UbiqoCR'; btn.disabled = false; }
   }
 }
 
