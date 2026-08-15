@@ -128,7 +128,7 @@ function renderBotonCarrito() {
   var nav = document.querySelector('.menu') || document.querySelector('.nav');
   if (!nav) return;
   var li = document.createElement('li');
-  li.innerHTML = '<button id="btnCarrito" onclick="togglePanelCarrito()" style="display:flex;align-items:center;gap:.4rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;background:none;border:none;cursor:pointer;font-family:inherit;">🛒 Mi lista <span id="carritoCount" style="display:none;background:#2563eb;color:#fff;font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;min-width:18px;text-align:center;">0</span></button>';
+  li.innerHTML = '<button id="btnCarrito" onclick="togglePanelCarrito()" style="display:flex;align-items:center;gap:.4rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;background:none;border:none;cursor:pointer;font-family:inherit;">Mi lista <span id="carritoCount" style="display:none;background:#2563eb;color:#fff;font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;min-width:18px;text-align:center;">0</span></button>';
   nav.appendChild(li);
 }
 
@@ -141,13 +141,16 @@ function actualizarContadorCarrito() {
 
 // ── UI: Panel carrito ─────────────────────────────────────────
 function togglePanelCarrito() {
-  if (!_usuario) { mostrarModalAuth(); return; }
-  var panel = document.getElementById('panelCarrito');
-  var overlay = document.getElementById('carritoOverlay');
-  if (panel) {
-    panel.remove();
-    if (overlay) overlay.remove();
-  } else { abrirPanelCarrito(); }
+  var existing = document.getElementById('carritoMsg');
+  if (existing) { existing.remove(); return; }
+  var msg = document.createElement('div');
+  msg.id = 'carritoMsg';
+  msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:2rem 2.5rem;text-align:center;z-index:2000;box-shadow:0 8px 32px rgba(0,0,0,.12);max-width:320px;width:90%;';
+  msg.innerHTML = '<button onclick="document.getElementById(\'carritoMsg\').remove()" style="position:absolute;top:.75rem;right:.75rem;background:none;border:none;cursor:pointer;font-size:1rem;color:#94a3b8;">✕</button>'
+    + '<div style="font-size:2rem;margin-bottom:.75rem;">🛠️</div>'
+    + '<div style="font-weight:700;font-size:1rem;color:#0f172a;margin-bottom:.4rem;">Estamos trabajando en ello...</div>'
+    + '<div style="font-size:.82rem;color:#64748b;line-height:1.6;">Esta funcionalidad estará disponible muy pronto.</div>';
+  document.body.appendChild(msg);
 }
 
 function abrirPanelCarrito() {
