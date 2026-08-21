@@ -18,13 +18,30 @@
   ══════════════════════════════════════ -->
   <header class="site-header">
     <nav class="nav">
-      <a class="logo" href="#" id="navBuscar">UbiqoCR</a>
-      <ul class="menu">
-        <li><a href="#" id="navBuscarMenu">Buscar</a></li>
-        <li><a href="#" id="navAgregar">Agregar negocio</a></li>
-      </ul>
-    </nav>
-  </header>
+  <a class="logo" href="#" id="navBuscar">UbiqoCR</a>
+  <ul class="menu">
+    <li><a href="#" id="navBuscarMenu">Buscar</a></li>
+    <li><a href="#" id="navAgregar">Agregar negocio</a></li>
+  </ul>
+
+  <!-- Menú móvil -->
+  <div id="menuMovil" onclick="cerrarMenuMovil()" style="display:none;">
+    <div id="menuMovilPanel" onclick="event.stopPropagation()">
+      <a href="#" onclick="setTab('buscar');cerrarMenuMovil()">🔍 Buscar</a>
+      <a href="#" onclick="setTab('agregar');cerrarMenuMovil()">➕ Agregar negocio</a>
+      <button onclick="togglePanelCarrito();cerrarMenuMovil()">🛒 Mi lista</button>
+      <button onclick="abrirPortalPartner();cerrarMenuMovil()">🏪 Partners</button>
+      <button onclick="abrirBuscadorNegocios();cerrarMenuMovil()">📍 Negocios</button>
+    </div>
+  </div>
+
+  <button id="btnHamburguesa" onclick="toggleMenuMovil()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+</header>
 
   <main class="container">
 

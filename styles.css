@@ -1584,3 +1584,74 @@ button, .btn { cursor: pointer; }
     width: 90px;
   }
 }
+
+/* ── Menú hamburguesa móvil ── */
+#btnHamburguesa {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: .4rem;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+#btnHamburguesa span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #0f172a;
+  border-radius: 2px;
+  transition: all .2s;
+}
+
+#menuMovil {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 500;
+}
+
+#menuMovilPanel {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  width: 280px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+#menuMovilPanel a, #menuMovilPanel button {
+  display: block;
+  width: 100%;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  font: inherit;
+  font-size: .95rem;
+  font-weight: 500;
+  color: #0f172a;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+#menuMovilPanel a:hover, #menuMovilPanel button:hover {
+  background: #f1f5f9;
+}
+
+@media (max-width: 640px) {
+  .menu { display: none; }
+  #btnHamburguesa { display: flex; }
+}
