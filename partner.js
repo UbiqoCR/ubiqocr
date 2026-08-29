@@ -122,8 +122,8 @@ function crearPanelAuth() {
     // FORM LOGIN
     + '<div id="pformLogin">'
     + '<div style="display:grid;gap:.75rem;">'
-    + campoPartner('pLoginCorreo', 'email', 'Correo del negocio', 'tu@negocio.com')
-    + campoPartner('pLoginCedula', 'text', 'Cédula jurídica', '3-101-123456')
+    + campoPartner('pLoginCorreo', 'email', 'Correo electrónico', 'Correo electrónico')
+    + campoPartner('pLoginCedula', 'text', 'Cédula', '1-2345-6789')
     + '<div id="pLoginError" style="display:none;background:#fef2f2;color:#991b1b;padding:.6rem .875rem;border-radius:8px;font-size:.82rem;"></div>'
     + '<button onclick="handlePartnerLogin()" style="width:100%;padding:.75rem;background:#2563eb;color:#fff;border:none;border-radius:8px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;">Entrar</button>'
     + '</div></div>'
@@ -131,18 +131,18 @@ function crearPanelAuth() {
     // FORM REGISTRO
     + '<div id="pformReg" style="display:none;">'
     + '<div style="display:grid;gap:.65rem;">'
-    + campoPartner('pRegNegocio', 'text', 'Nombre del negocio *', 'Ferretería La Esquina')
+    + campoPartner('pRegNegocio', 'text', 'Nombre del negocio', 'Nombre')
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;">'
-    + campoPartner('pRegContacto', 'text', 'Nombre del contacto *', 'Juan Arce')
-    + campoPartner('pRegTelefono', 'tel', 'Teléfono *', '8888-8888')
+    + campoPartner('pRegContacto', 'text', 'Nombre del contacto', 'Nombre completo')
+    + campoPartner('pRegTelefono', 'tel', 'Teléfono', '0000-0000')
     + '</div>'
-    + campoPartner('pRegCorreo', 'email', 'Correo electrónico *', 'tu@negocio.com')
-    + campoPartner('pRegCedula', 'text', 'Cédula jurídica *', '3-101-123456')
+    + campoPartner('pRegCorreo', 'email', 'Correo electrónico de contacto', 'Correo electrónico')
+    + campoPartner('pRegCedula', 'text', 'Cédula', '1-2345-6789')
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;">'
-    + campoPartnerSelect('pRegTipo', 'Tipo de negocio *', ['Ferretería','Supermercado','Mini súper / Pulpería','Farmacia','Hogar y decoración','Electrónica','Ropa y calzado','Otro'])
-    + campoPartner('pRegProvincia', 'text', 'Provincia *', 'San José')
+    + campoPartnerSelect('pRegTipo', 'Tipo de negocio', ['Ferretería','Supermercado','Mini súper / Pulpería','Farmacia','Hogar y decoración','Electrónica','Ropa y calzado','Otro'])
+    + campoPartner('pRegProvincia', 'text', 'Provincia', 'Provincia')
     + '</div>'
-    + campoPartner('pRegCanton', 'text', 'Cantón *', 'Escazú')
+    + campoPartner('pRegCanton', 'text', 'Cantón', 'Cantón')
     + '<div id="pRegError" style="display:none;background:#fef2f2;color:#991b1b;padding:.6rem .875rem;border-radius:8px;font-size:.82rem;"></div>'
     + '<button onclick="handlePartnerRegistro()" style="width:100%;padding:.75rem;background:#2563eb;color:#fff;border:none;border-radius:8px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;">Solicitar registro</button>'
     + '<p style="font-size:.72rem;color:#94a3b8;text-align:center;">Tu solicitud será revisada en menos de 48 horas.</p>'
