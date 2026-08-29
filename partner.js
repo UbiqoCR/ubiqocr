@@ -133,7 +133,7 @@ function crearPanelAuth() {
     + '<div style="display:grid;gap:.65rem;">'
     + campoPartner('pRegNegocio', 'text', 'Nombre del negocio', 'Nombre')
     + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;">'
-    + campoPartner('pRegContacto', 'text', 'Nombre del contacto', 'Nombre completo')
+    + campoPartner('pRegContacto', 'text', 'Nombre del contacto', 'Nombre')
     + campoPartner('pRegTelefono', 'tel', 'Teléfono', '0000-0000')
     + '</div>'
     + campoPartner('pRegCorreo', 'email', 'Correo electrónico de contacto', 'Correo electrónico')
