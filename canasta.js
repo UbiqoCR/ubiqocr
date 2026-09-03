@@ -55,7 +55,7 @@ function initCanasta() {
   var menu = document.querySelector('.menu');
   if (!menu) return;
   var li = document.createElement('li');
-  li.innerHTML = '<a href="#" id="btnCanasta" onclick="abrirCanasta();return false;" style="display:flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;transition:all 180ms;">🧺 Canasta</a>';
+  li.innerHTML = '<a href="#" id="btnCanasta" onclick="abrirCanasta();return false;" style="display:flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;transition:all 180ms;">Canasta</a>';
   menu.appendChild(li);
 }
 
@@ -72,7 +72,7 @@ function abrirCanasta() {
 
   modal.innerHTML =
     '<div style="padding:1rem 1.5rem;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
-    + '<div style="display:flex;align-items:center;gap:.75rem;"><span style="font-size:1.4rem;">🧺</span><div><div style="font-weight:700;font-size:1.05rem;color:#0f172a;">Canasta Básica</div><div style="font-size:.75rem;color:#64748b;">Lista oficial INEC Costa Rica</div></div></div>'
+    + '<div style="display:flex;align-items:center;gap:.75rem;"><span style="font-size:1.4rem;"></span><div><div style="font-weight:700;font-size:1.05rem;color:#0f172a;">Canasta Básica</div><div style="font-size:.75rem;color:#64748b;">Lista oficial INEC Costa Rica</div></div></div>'
     + '<button onclick="document.getElementById(\'modalCanasta\').remove()" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.4rem .875rem;font:inherit;font-size:.875rem;cursor:pointer;color:#64748b;">✕ Cerrar</button>'
     + '</div>'
 
@@ -102,7 +102,7 @@ function abrirCanasta() {
     // Panel de comparación
     + '<div id="canastaComparacion" style="overflow-y:auto;padding:1.5rem;display:flex;align-items:center;justify-content:center;">'
     + '<div style="text-align:center;color:#94a3b8;">'
-    + '<div style="font-size:3rem;margin-bottom:.75rem;">🧺</div>'
+    + '<div style="font-size:3rem;margin-bottom:.75rem;"></div>'
     + '<div style="font-size:.95rem;font-weight:500;margin-bottom:.4rem;">Seleccioná los productos</div>'
     + '<div style="font-size:.82rem;">y hacé clic en "Comparar →" para ver en cuál tienda te sale más barata la canasta</div>'
     + '</div>'
@@ -187,7 +187,7 @@ async function compararCanasta() {
 
   // Mostrar panel en móvil
   panel.style.display = '';
-  panel.innerHTML = '<div style="text-align:center;padding:2rem;color:#64748b;"><div style="font-size:1.5rem;margin-bottom:.5rem;">⏳</div><div>Buscando precios en todas las tiendas...</div></div>';
+  panel.innerHTML = '<div style="text-align:center;padding:2rem;color:#64748b;"><div style="font-size:1.5rem;margin-bottom:.5rem;"></div><div>Buscando precios en todas las tiendas...</div></div>';
 
   var todos = [];
   if (typeof cargarProductosEstaticos === 'function') {
@@ -258,7 +258,7 @@ async function compararCanasta() {
     var pct = Math.round(info.encontrados / totalActivos * 100);
     var esMejor = i === 0;
     html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem .875rem;margin-bottom:.4rem;border-radius:10px;background:' + (esMejor ? '#ecfdf5' : '#f8fafc') + ';border:1px solid ' + (esMejor ? '#16a34a' : '#e2e8f0') + ';">'
-      + '<div><div style="font-weight:' + (esMejor ? '700' : '500') + ';font-size:.9rem;color:' + (esMejor ? '#16a34a' : '#0f172a') + ';">' + (esMejor ? '⭐ ' : '') + t + '</div>'
+      + '<div><div style="font-weight:' + (esMejor ? '700' : '500') + ';font-size:.9rem;color:' + (esMejor ? '#16a34a' : '#0f172a') + ';">' + (esMejor ? '' : '') + t + '</div>'
       + '<div style="font-size:.72rem;color:#64748b;">' + info.encontrados + ' de ' + totalActivos + ' productos encontrados (' + pct + '%)</div></div>'
       + '<div style="font-size:1.1rem;font-weight:800;color:' + (esMejor ? '#16a34a' : '#0f172a') + ';">₡' + info.total.toLocaleString('es-CR') + '</div>'
       + '</div>';
@@ -266,7 +266,7 @@ async function compararCanasta() {
 
   if (tiendasOrdenadas.length > 1) {
     var ahorro = resumenTiendas[tiendasOrdenadas[tiendasOrdenadas.length-1]].total - resumenTiendas[tiendasOrdenadas[0]].total;
-    html += '<div style="padding:.625rem .875rem;background:#eff6ff;border-radius:8px;font-size:.82rem;color:#1d4ed8;font-weight:600;margin-top:.5rem;">💡 Ahorrás hasta ₡' + ahorro.toLocaleString('es-CR') + ' comprando en ' + tiendasOrdenadas[0] + '</div>';
+    html += '<div style="padding:.625rem .875rem;background:#eff6ff;border-radius:8px;font-size:.82rem;color:#1d4ed8;font-weight:600;margin-top:.5rem;">Ahorrás hasta ₡' + ahorro.toLocaleString('es-CR') + ' comprando en ' + tiendasOrdenadas[0] + '</div>';
   }
   html += '</div>';
 
@@ -284,7 +284,7 @@ async function compararCanasta() {
       ts.forEach(function(t, i) {
         var p = d.tiendas[t];
         html += '<div style="display:flex;justify-content:space-between;padding:.25rem 0;border-bottom:1px dashed #e2e8f0;font-size:.78rem;' + (i===0?'color:#16a34a;font-weight:700;':'color:#64748b;') + '">'
-          + '<span>' + (i===0?'⭐ ':'') + t + '</span>'
+          + '<span>' + (i===0?'':'') + t + '</span>'
           + '<span>₡' + p.precio.toLocaleString('es-CR') + '</span>'
           + '</div>';
       });
