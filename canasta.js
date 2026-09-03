@@ -198,12 +198,16 @@ async function compararCanasta() {
     return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
 
-  function similitud(a, b) {
-    var wa = normN(a).split(/\s+/).filter(function(w) { return w.length > 2; });
-    var wb = normN(b).split(/\s+/).filter(function(w) { return w.length > 2; });
+    function similitud(a, b) {
+    var na = normN(a);
+    var nb = normN(b);
+    // Búsqueda directa — si el término buscado está contenido en el nombre del producto
+    if (nb.includes(na) || na.split(/\s+/).every(function(w) { return w.length < 3 || nb.includes(w); })) return 1;
+    var wa = na.split(/\s+/).filter(function(w) { return w.length > 2; });
+    var wb = nb.split(/\s+/).filter(function(w) { return w.length > 2; });
     if (!wa.length || !wb.length) return 0;
     var coinciden = wa.filter(function(w) { return wb.indexOf(w) !== -1; }).length;
-    return coinciden / Math.max(wa.length, wb.length);
+    return coinciden / Math.min(wa.length, wb.length);
   }
 
   // Para cada producto activo, buscar el más barato por tienda
@@ -212,7 +216,7 @@ async function compararCanasta() {
 
   activos.forEach(function(item) {
     var similares = todos.filter(function(p) {
-      return p.precio && similitud(item.nombre, p.nombre) >= 0.4;
+      return p.precio && similitud(item.nombre, p.nombre) >= 0.5;
     });
 
     // Mejor precio por tienda
