@@ -55,7 +55,7 @@ function initCanasta() {
   var menu = document.querySelector('.menu');
   if (!menu) return;
   var li = document.createElement('li');
-  li.innerHTML = '<a href="#" id="btnCanasta" onclick="abrirCanasta();return false;" style="display:flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;transition:all 180ms;">Canasta</a>';
+  li.innerHTML = '<a href="#" id="btnCanasta" onclick="abrirCanasta();return false;" style="display:flex;align-items:center;gap:.35rem;padding:.45rem .85rem;border-radius:999px;font-size:.875rem;font-weight:500;color:#64748b;transition:all 180ms;">Canasta básica</a>';
   menu.appendChild(li);
 }
 
