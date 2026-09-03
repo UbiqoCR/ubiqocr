@@ -33,15 +33,14 @@
   </ul>
 
   <!-- Menú móvil -->
-  <div id="menuMovil" onclick="cerrarMenuMovil()" style="display:none;">
-    <div id="menuMovilPanel" onclick="event.stopPropagation()">
-      <a href="#" onclick="setTab('buscar');cerrarMenuMovil()">Buscar</a>
-      <a href="#" onclick="setTab('agregar');cerrarMenuMovil()">Agregar negocio</a>
-      <button onclick="togglePanelCarrito();cerrarMenuMovil()">Mi lista</button>
-      <button onclick="abrirPortalPartner();cerrarMenuMovil()">Partners</button>
-      <button onclick="abrirBuscadorNegocios();cerrarMenuMovil()">Negocios</button>
-    </div>
-  </div>
+  <div id="menuMovilPanel" onclick="event.stopPropagation()">
+  <a href="#" onclick="setTab('buscar');cerrarMenuMovil()">Buscar</a>
+  <a href="#" onclick="setTab('agregar');cerrarMenuMovil()">Agregar negocio</a>
+  <button onclick="togglePanelCarrito();cerrarMenuMovil()">Mi lista</button>
+  <button onclick="abrirCanasta();cerrarMenuMovil()">Canasta básica</button>
+  <button onclick="abrirPortalPartner();cerrarMenuMovil()">Partners</button>
+  <button onclick="abrirBuscadorNegocios();cerrarMenuMovil()">Negocios</button>
+</div>
 
   <button id="btnHamburguesa" onclick="toggleMenuMovil()">
     <span></span>
